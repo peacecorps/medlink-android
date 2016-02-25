@@ -1,0 +1,3 @@
+<resources>
+    <string name="api_endpoint_base">https://medlink-staging.herokuapp.com/api/v1/</string>
+</resources>
