@@ -23,6 +23,7 @@ public class LoginPresenter {
     }
 
     public void loginUser(String email, String password) {
+        loginView.getBaseActivity().showProgressDialog(R.string.logging_in);
         Call<LoginResponse> loginResponseCall = api.loginUser(buildLoginRequestPayload(email, password));
         loginResponseCall.enqueue(new GlobalRestCallback<LoginResponse>(loginView.getBaseActivity()) {
             @Override
