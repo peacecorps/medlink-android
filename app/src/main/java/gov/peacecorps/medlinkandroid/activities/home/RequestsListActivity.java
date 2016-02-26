@@ -11,25 +11,27 @@ import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 
-public class HomeActivity extends BaseActivity implements HomeView {
+public class RequestsListActivity extends BaseActivity implements RequestsListView {
 
     @Inject
-    HomePresenter homePresenter;
+    RequestsListPresenter requestsListPresenter;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerHomeComponent
+        DaggerRequestsListComponent
                 .builder()
                 .appComponent(appComponent)
-                .homeModule(new HomeModule(this))
+                .requestsListModule(new RequestsListModule(this))
                 .build()
                 .inject(this);
     }
 
+    //TODO: create recycler view for the requests list
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_requests_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

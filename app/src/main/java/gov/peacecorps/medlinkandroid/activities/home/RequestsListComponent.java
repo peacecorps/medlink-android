@@ -4,8 +4,8 @@ import dagger.Component;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.di.annotation.ActivityScope;
 
-@Component(modules = HomeModule.class, dependencies = AppComponent.class)
+@Component(modules = RequestsListModule.class, dependencies = AppComponent.class)
 @ActivityScope
-public interface HomeComponent {
-    void inject(HomeActivity homeActivity);
+public interface RequestsListComponent {
+    void inject(RequestsListActivity requestsListActivity);
 }

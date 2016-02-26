@@ -14,7 +14,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
-import gov.peacecorps.medlinkandroid.activities.home.HomeActivity;
+import gov.peacecorps.medlinkandroid.activities.home.RequestsListActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.helpers.Validator;
 import gov.peacecorps.medlinkandroid.helpers.exceptions.UserNotFoundException;
@@ -58,7 +58,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     public void goToHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, RequestsListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

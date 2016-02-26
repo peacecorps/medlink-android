@@ -1,4 +1,4 @@
 package gov.peacecorps.medlinkandroid.activities.home;
 
-public interface HomeView {
+public interface RequestsListView {
 }
