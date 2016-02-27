@@ -1,4 +1,4 @@
-package gov.peacecorps.medlinkandroid.activities.home;
+package gov.peacecorps.medlinkandroid.activities.requestslist;
 
 import dagger.Component;
 import gov.peacecorps.medlinkandroid.application.AppComponent;

@@ -1,8 +1,9 @@
-package gov.peacecorps.medlinkandroid.activities.home;
+package gov.peacecorps.medlinkandroid.activities.requestslist;
 
 import dagger.Module;
 import dagger.Provides;
 import gov.peacecorps.medlinkandroid.di.annotation.ActivityScope;
+import gov.peacecorps.medlinkandroid.rest.service.API;
 
 @Module
 public class RequestsListModule {
@@ -15,7 +16,7 @@ public class RequestsListModule {
 
     @Provides
     @ActivityScope
-    RequestsListPresenter providePresenter(){
-        return new RequestsListPresenter(requestsListView);
+    RequestsListPresenter providePresenter(API api){
+        return new RequestsListPresenter(requestsListView, api);
     }
 }

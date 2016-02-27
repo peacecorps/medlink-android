@@ -1,15 +1,18 @@
-package gov.peacecorps.medlinkandroid.activities.home;
+package gov.peacecorps.medlinkandroid.activities.requestslist;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
+import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
 
 public class RequestsListActivity extends BaseActivity implements RequestsListView {
 
@@ -42,5 +45,12 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
                 //TODO: open activity to make a new request
             }
         });
+
+        requestsListPresenter.getRequestsList();
+    }
+
+    @Override
+    public void displayRequests(List<Request> requests) {
+
     }
 }

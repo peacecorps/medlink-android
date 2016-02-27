@@ -8,4 +8,6 @@
     <string name="logout">Log out</string>
     <string name="logging_out">Logging out…</string>
     <string name="logging_in">Logging in…</string>
+    <string name="fetching_requests">Fetching requests…</string>
+    <string name="could_not_fetch_supplies">Could not fetch supplies</string>
 </resources>

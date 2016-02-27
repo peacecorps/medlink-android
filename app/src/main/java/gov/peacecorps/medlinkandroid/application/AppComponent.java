@@ -7,8 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
-import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
-import gov.peacecorps.medlinkandroid.rest.API;
+import gov.peacecorps.medlinkandroid.rest.service.API;
 import gov.peacecorps.medlinkandroid.rest.RestModule;
 
 @Component(modules = {AppModule.class, RestModule.class})
@@ -22,8 +21,6 @@ public interface AppComponent {
     API exposeAPI();
 
     AppSharedPreferences exposeSharedPreferences();
-
-    HmacSigner exposeHmacSigner();
 
     final class Initializer {
         public static AppComponent initialize(Application application){
