@@ -15,4 +15,5 @@
     <string name="section_header_processed">Processed Items</string>
     <string name="section_header_pending">Pending Items</string>
     <string name="section_header_denied">Denied Items</string>
+    <string name="see_order_history">See Order History</string>
 </resources>

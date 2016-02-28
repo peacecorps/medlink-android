@@ -84,7 +84,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_base, menu);
 
         return true;
     }
