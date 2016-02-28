@@ -34,7 +34,7 @@ public class LoginPresenter {
                     fetchSupplies();
                 } else {
                     loginView.getBaseActivity().dismissProgressDialog();
-                    loginView.getBaseActivity().showMaterialDialog(R.string.invalid_login);
+                    loginView.getBaseActivity().showInfoDialog(R.string.invalid_login);
                 }
             }
         });
@@ -50,7 +50,7 @@ public class LoginPresenter {
                     appSharedPreferences.setSupplies(DataConverter.convertGetSuppliesResponseToSupply(response.body()));
                     loginView.goToRequestsListActivity();
                 } else {
-                    loginView.getBaseActivity().showMaterialDialog(R.string.could_not_fetch_supplies);
+                    loginView.getBaseActivity().showInfoDialog(R.string.could_not_fetch_supplies);
                 }
             }
         });

@@ -3,11 +3,12 @@ package gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import gov.peacecorps.medlinkandroid.helpers.Constants;
 
-public class SupplyResponse {
+public class SupplyResponse implements Serializable {
     @JsonProperty("id")
     private Integer id;
 

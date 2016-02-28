@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
     }
 
-    protected void bootstrapDI() {
+    private void bootstrapDI() {
         AppComponent appComponent = ((App) getApplication()).getAppComponent();
         DaggerBaseComponent
                 .builder()
@@ -62,8 +62,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         dialog.show();
     }
 
-    public void showMaterialDialog(int resId) {
-        showMaterialDialog(resId, new MaterialDialog.ButtonCallback() {
+    public void showInfoDialog(int resId) {
+        showInfoDialog(resId, new MaterialDialog.ButtonCallback() {
             @Override
             public void onPositive(MaterialDialog dialog) {
                 super.onPositive(dialog);
@@ -71,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         });
     }
 
-    private void showMaterialDialog(int resId, MaterialDialog.ButtonCallback callback) {
+    private void showInfoDialog(int resId, MaterialDialog.ButtonCallback callback) {
         dialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(resId)

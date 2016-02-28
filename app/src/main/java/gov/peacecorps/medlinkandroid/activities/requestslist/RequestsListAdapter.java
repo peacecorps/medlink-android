@@ -1,11 +1,13 @@
 package gov.peacecorps.medlinkandroid.activities.requestslist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -14,7 +16,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
+import gov.peacecorps.medlinkandroid.activities.requestdetail.RequestDetailActivity;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.Constants;
 import gov.peacecorps.medlinkandroid.helpers.DataConverter;
 import gov.peacecorps.medlinkandroid.helpers.DateUtils;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
@@ -29,8 +33,8 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final static int VIEW_TYPE_REQUEST = 1;
     private final AppSharedPreferences appSharedPreferences;
 
-    public RequestsListAdapter(Context context, AppSharedPreferences appSharedPreferences) {
-        this.context = context;
+    public RequestsListAdapter(RequestsListView requestsListView, AppSharedPreferences appSharedPreferences) {
+        this.context = requestsListView.getBaseActivity();
         this.appSharedPreferences = appSharedPreferences;
         this.requestsList = new LinkedList<>();
     }
@@ -45,12 +49,11 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_request, parent, false);
                 return new RequestViewHolder(view);
         }
-
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        RequestListItem requestListItem = requestsList.get(position);
+        final RequestListItem requestListItem = requestsList.get(position);
         if (requestListItem.isSectionHeader()) {
             SectionHeaderViewHolder sectionHeaderViewHolder = (SectionHeaderViewHolder) holder;
             sectionHeaderViewHolder.sectionNameTv.setText(requestListItem.getSectionHeaderName());
@@ -58,7 +61,20 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             RequestViewHolder requestViewHolder = (RequestViewHolder) holder;
             requestViewHolder.orderDateTv.setText(DateUtils.getDisplayStringFromDate(requestListItem.getCreatedAt()));
             requestViewHolder.suppliesSnippetTv.setText(getSuppliesNamesSnippet(requestListItem));
+            requestViewHolder.rowLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToRequestDetailActivity(requestListItem);
+                }
+            });
         }
+    }
+
+    private void goToRequestDetailActivity(RequestListItem requestListItem) {
+        Intent intent = new Intent(context, RequestDetailActivity.class);
+        intent.putExtra(Constants.EXTRA_REQUEST_LIST_ITEM, requestListItem);
+
+        context.startActivity(intent);
     }
 
     private String getSuppliesNamesSnippet(RequestListItem requestListItem) {
@@ -78,7 +94,7 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @NonNull
     private String trimTrailingComma(String result) {
-        return result.substring(0, result.length()-2);
+        return result.substring(0, result.length() - 2);
     }
 
     @Override
@@ -151,6 +167,9 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static final class RequestViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.rowLayout)
+        RelativeLayout rowLayout;
+
         @Bind(R.id.orderDateTv)
         TextView orderDateTv;
 

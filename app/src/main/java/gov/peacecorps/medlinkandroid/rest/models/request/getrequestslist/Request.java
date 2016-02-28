@@ -3,12 +3,13 @@ package gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import gov.peacecorps.medlinkandroid.helpers.Constants;
 
-public class Request {
+public class Request implements Serializable {
 
     public enum Status {
         ALL_APPROVED,
@@ -44,7 +45,7 @@ public class Request {
         int numApproved = 0, numDenied = 0;
 
         for (Supply supply : getSupplies()) {
-            if (supply.getResponse() == null) {
+            if (supply.isPending()) {
                 return Status.AT_LEAST_ONE_PENDING;
             } else {
 

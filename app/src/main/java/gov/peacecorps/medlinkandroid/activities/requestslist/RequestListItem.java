@@ -1,8 +1,10 @@
 package gov.peacecorps.medlinkandroid.activities.requestslist;
 
+import java.io.Serializable;
+
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
 
-public final class RequestListItem extends Request {
+public final class RequestListItem extends Request implements Serializable {
     private boolean isSectionHeader;
     private String sectionHeaderName;
 
