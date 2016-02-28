@@ -13,9 +13,9 @@ public interface API {
     @POST("auth")
     Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
 
-    @GET("requests")
-    Call<GetRequestsListResponse> getRequestsList();
-
     @GET("supplies")
     Call<GetSuppliesResponse> getSupplies();
+
+    @GET("requests")
+    Call<GetRequestsListResponse> getRequestsList();
 }

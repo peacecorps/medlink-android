@@ -12,10 +12,10 @@ public class SupplyResponse {
     private Integer id;
 
     @JsonProperty("type")
-    private String type;
+    private SupplyResponseType type;
 
     @JsonProperty("created_at")
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern=Constants.DATE_FORMAT)
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern=Constants.DESERIALIZE_DATE_FORMAT)
     private Date createdAt;
 
     public Integer getId() {
@@ -26,11 +26,11 @@ public class SupplyResponse {
         this.id = id;
     }
 
-    public String getType() {
+    public SupplyResponseType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(SupplyResponseType type) {
         this.type = type;
     }
 

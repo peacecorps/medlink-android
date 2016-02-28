@@ -19,8 +19,8 @@ public class RequestsListPresenter {
 
     public void getRequestsList() {
         requestsListView.getBaseActivity().showProgressDialog(R.string.fetching_requests);
-        Call<GetRequestsListResponse> requestsListResponseCall = api.getRequestsList();
-        requestsListResponseCall.enqueue(new GlobalRestCallback<GetRequestsListResponse>(requestsListView.getBaseActivity()) {
+        Call<GetRequestsListResponse> getRequestsListResponseCall = api.getRequestsList();
+        getRequestsListResponseCall.enqueue(new GlobalRestCallback<GetRequestsListResponse>(requestsListView.getBaseActivity()) {
             @Override
             public void onResponse(Response<GetRequestsListResponse> response, Retrofit retrofit) {
                 requestsListView.getBaseActivity().dismissProgressDialog();

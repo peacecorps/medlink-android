@@ -38,7 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onPause() {
         super.onPause();
-        if (dialog.isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }

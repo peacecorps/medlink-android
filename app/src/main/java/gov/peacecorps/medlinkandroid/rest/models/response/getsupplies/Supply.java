@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.peacecorps.medlinkandroid.rest.models.response.BaseResponse;
 
 public class Supply extends BaseResponse {
+
     @JsonProperty("id")
     private Integer id;
 
