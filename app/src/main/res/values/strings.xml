@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Medlink Android</string>
+    <string name="please_login">Please log in.</string>
+    <string name="submit">Submit</string>
+    <string name="okay">OK</string>
+    <string name="no_network_available">No network connection available. Please try again later.</string>
+    <string name="invalid_login">Invalid login credentials. Please check your email and password and try again.</string>
+    <string name="logout">Log out</string>
+    <string name="logging_out">Logging out…</string>
+    <string name="logging_in">Logging in…</string>
+</resources>

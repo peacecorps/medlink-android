@@ -1,0 +1,3 @@
+<resources>
+    <string name="api_endpoint_base">http://private-6373d-medlink.apiary-mock.com/</string>
+</resources>
