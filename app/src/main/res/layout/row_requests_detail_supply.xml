@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -19,22 +20,18 @@
 
     <TextView
         android:id="@+id/supplyNameTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AppTheme.TextOrderHeader"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/supplyActionBtn"
         android:layout_toStartOf="@id/supplyActionBtn"
         android:gravity="bottom"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        tools:text="Supply Name" />
 
     <TextView
         android:id="@+id/supplyStatusTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AppTheme.TextOrderDetails"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -42,8 +39,6 @@
         android:layout_toLeftOf="@id/supplyActionBtn"
         android:layout_toStartOf="@id/supplyActionBtn"
         android:gravity="bottom"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        tools:text="Supply Status" />
 
 </RelativeLayout>

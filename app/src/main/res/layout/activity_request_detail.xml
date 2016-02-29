@@ -12,11 +12,8 @@
 
     <TextView
         android:id="@+id/orderDateTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        style="@style/AppTheme.TextSectionHeader"
+        tools:text="27 Feb 2016, 08:06:23 PM" />
 
     <View style="@style/Divider" />
 
