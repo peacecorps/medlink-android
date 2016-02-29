@@ -16,4 +16,16 @@
     <string name="section_header_pending">Pending Items</string>
     <string name="section_header_denied">Denied Items</string>
     <string name="see_order_history">See Order History</string>
+    <string name="perform_supply_action">Mark supply as received or flag for PCMO action</string>
+    <string name="order_details">Order Details</string>
+    <string name="approved_for_delivery">Approved for delivery</string>
+    <string name="denied_by_pcmo">Denied by PCMO</string>
+    <string name="scheduled_for_pickup">Scheduled for pickup</string>
+    <string name="will_be_reimbursed">Will be reimbursed</string>
+    <string name="not_processed_by_pcmo">Not processed by PCMO</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure_received">Are you sure you received this supply?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="marking_supply_as_received">Marking supply as received…</string>
 </resources>

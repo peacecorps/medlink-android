@@ -1,7 +1,6 @@
 package gov.peacecorps.medlinkandroid.activities.requestslist;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +25,9 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
     RequestsListPresenter requestsListPresenter;
 
     @Inject
+    RequestsListAdapter requestsListAdapter;
+
+    @Inject
     AppSharedPreferences appSharedPreferences;
 
     @Bind(R.id.requestsListRv)
@@ -33,8 +35,6 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
-    private RequestsListAdapter requestsListAdapter;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -67,12 +67,6 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
 
     private void initRequestListRecyclerView() {
         requestsListRv.setLayoutManager(new LinearLayoutManager(this));
-        initRequestsListAdapter();
-    }
-
-    @NonNull
-    private void initRequestsListAdapter() {
-        requestsListAdapter = new RequestsListAdapter(this, appSharedPreferences);
         requestsListRv.setAdapter(requestsListAdapter);
     }
 

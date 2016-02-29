@@ -2,7 +2,9 @@ package gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Supply {
+import java.io.Serializable;
+
+public class Supply implements Serializable {
     @JsonProperty("id")
     private Integer id;
 
@@ -19,6 +21,10 @@ public class Supply {
 
     public SupplyResponse getResponse() {
         return response;
+    }
+
+    public boolean isPending(){
+        return getResponse() == null;
     }
 
     public void setResponse(SupplyResponse response) {
