@@ -1,3 +1,4 @@
 <resources>
-    <string name="api_endpoint_base">http://private-6373d-medlink.apiary-mock.com/</string>
+    <!--<string name="api_endpoint_base">http://private-6373d-medlink.apiary-mock.com/api/v1/</string>-->
+    <string name="api_endpoint_base">https://medlink-staging.herokuapp.com/api/v1/</string>
 </resources>

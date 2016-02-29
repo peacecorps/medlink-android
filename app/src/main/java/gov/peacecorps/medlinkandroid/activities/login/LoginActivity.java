@@ -14,10 +14,9 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
-import gov.peacecorps.medlinkandroid.activities.home.RequestsListActivity;
+import gov.peacecorps.medlinkandroid.activities.requestslist.RequestsListActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.helpers.Validator;
-import gov.peacecorps.medlinkandroid.helpers.exceptions.UserNotFoundException;
 
 public class LoginActivity extends BaseActivity implements LoginView {
 
@@ -47,8 +46,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(isThereAnExistingUser()){
-            goToHomeActivity();
+        if(sharedPreferences.hasUser()){
+            goToRequestsListActivity();
             return;
         }
 
@@ -57,20 +56,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @Override
-    public void goToHomeActivity() {
+    public void goToRequestsListActivity() {
         Intent intent = new Intent(this, RequestsListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-    }
-
-    private boolean isThereAnExistingUser() {
-        try {
-            sharedPreferences.getUser();
-            return true;
-        } catch (UserNotFoundException e){
-            return false;
-        }
     }
 
     @OnTextChanged({R.id.emailEt, R.id.passwordEt})
@@ -94,10 +84,5 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @OnClick(R.id.submitBtn)
     public void onSubmitBtnClick(){
         loginPresenter.loginUser(emailEt.getText().toString(), passwordEt.getText().toString());
-    }
-
-    @Override
-    public BaseActivity getBaseActivity() {
-        return this;
     }
 }

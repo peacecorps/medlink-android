@@ -1,12 +1,13 @@
 package gov.peacecorps.medlinkandroid.activities.login;
 
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.data.models.User;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
-import gov.peacecorps.medlinkandroid.rest.API;
+import gov.peacecorps.medlinkandroid.helpers.DataConverter;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.login.LoginRequest;
+import gov.peacecorps.medlinkandroid.rest.models.response.getsupplies.GetSuppliesResponse;
 import gov.peacecorps.medlinkandroid.rest.models.response.login.LoginResponse;
+import gov.peacecorps.medlinkandroid.rest.service.API;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -28,23 +29,31 @@ public class LoginPresenter {
         loginResponseCall.enqueue(new GlobalRestCallback<LoginResponse>(loginView.getBaseActivity()) {
             @Override
             public void onResponse(Response<LoginResponse> response, Retrofit retrofit) {
-                loginView.getBaseActivity().dismissProgressDialog();
-                if(response.isSuccess()){
-                    appSharedPreferences.setUser(buildUser(response.body()));
-                    loginView.goToHomeActivity();
+                if (response.isSuccess()) {
+                    appSharedPreferences.setUser(DataConverter.convertLoginResponseToUser(response.body()));
+                    fetchSupplies();
                 } else {
+                    loginView.getBaseActivity().dismissProgressDialog();
                     loginView.getBaseActivity().showMaterialDialog(R.string.invalid_login);
                 }
             }
         });
     }
 
-    private User buildUser(LoginResponse loginResponse) {
-        User user = new User();
-        user.setSecretKey(loginResponse.getSecretKey());
-        user.setUserId(loginResponse.getId());
-
-        return user;
+    private void fetchSupplies() {
+        Call<GetSuppliesResponse> getSuppliesResponseCall = api.getSupplies();
+        getSuppliesResponseCall.enqueue(new GlobalRestCallback<GetSuppliesResponse>(loginView.getBaseActivity()) {
+            @Override
+            public void onResponse(Response<GetSuppliesResponse> response, Retrofit retrofit) {
+                loginView.getBaseActivity().dismissProgressDialog();
+                if (response.isSuccess()) {
+                    appSharedPreferences.setSupplies(DataConverter.convertGetSuppliesResponseToSupply(response.body()));
+                    loginView.goToRequestsListActivity();
+                } else {
+                    loginView.getBaseActivity().showMaterialDialog(R.string.could_not_fetch_supplies);
+                }
+            }
+        });
     }
 
     private LoginRequest buildLoginRequestPayload(String email, String password) {

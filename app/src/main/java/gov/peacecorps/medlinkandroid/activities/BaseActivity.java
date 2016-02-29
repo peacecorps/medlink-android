@@ -16,7 +16,7 @@ import gov.peacecorps.medlinkandroid.application.App;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
     protected abstract void setupActivityComponent(AppComponent appComponent);
 
@@ -29,19 +29,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bootstrapDI();
-        initMaterialDialog();
-    }
-
-    private void initMaterialDialog() {
-        if (dialog == null) {
-            dialog = new MaterialDialog.Builder(this)
-                    .cancelable(false)
-                    .build();
-        }
-    }
-
-    public void showProgressDialog() {
-        if (dialog != null && !dialog.isShowing()) dialog.show();
     }
 
     public void dismissProgressDialog() {
@@ -51,15 +38,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (dialog.isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        dialog = null;
-        super.onDestroy();
     }
 
     protected void bootstrapDI() {
@@ -73,12 +54,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog(int resId) {
-        new MaterialDialog.Builder(this)
+        dialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(resId)
                 .progress(true, 0)
-                .build()
-                .show();
+                .build();
+        dialog.show();
     }
 
     public void showMaterialDialog(int resId) {
@@ -91,18 +72,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void showMaterialDialog(int resId, MaterialDialog.ButtonCallback callback) {
-        new MaterialDialog.Builder(this)
+        dialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(resId)
                 .positiveText(R.string.okay)
                 .callback(callback)
-                .build()
-                .show();
+                .build();
+
+        dialog.show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_base, menu);
+
         return true;
     }
 
@@ -126,5 +109,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         dismissProgressDialog();
 
         finish();
+    }
+
+    @Override
+    public BaseActivity getBaseActivity() {
+        return this;
     }
 }

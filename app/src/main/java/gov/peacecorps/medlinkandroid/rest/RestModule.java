@@ -2,7 +2,6 @@ package gov.peacecorps.medlinkandroid.rest;
 
 import android.content.Context;
 
-import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
@@ -13,6 +12,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import gov.peacecorps.medlinkandroid.R;
+import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
+import gov.peacecorps.medlinkandroid.rest.service.API;
 import retrofit.JacksonConverterFactory;
 import retrofit.Retrofit;
 
@@ -23,7 +25,7 @@ public class RestModule {
 
     @Provides
     @Singleton
-    Interceptor provideLoggingInterceptor() {
+    HttpLoggingInterceptor provideLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -32,11 +34,18 @@ public class RestModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(Interceptor loggingInterceptor) {
+    HmacInterceptor provideHmacInterceptor(HmacSigner hmacSigner, AppSharedPreferences appSharedPreferences){
+        return new HmacInterceptor(hmacSigner, appSharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingInterceptor, HmacInterceptor hmacInterceptor) {
         OkHttpClient client = new OkHttpClient();
         client.setReadTimeout(TIMEOUT, TimeUnit.SECONDS);
         client.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
         client.interceptors().add(loggingInterceptor);
+        client.interceptors().add(hmacInterceptor);
 
         return client;
     }

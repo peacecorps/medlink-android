@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Medlink Android</string>
+    <string name="app_name">Medlink</string>
     <string name="please_login">Please log in.</string>
     <string name="submit">Submit</string>
     <string name="okay">OK</string>
@@ -8,4 +8,12 @@
     <string name="logout">Log out</string>
     <string name="logging_out">Logging out…</string>
     <string name="logging_in">Logging in…</string>
+    <string name="fetching_requests">Fetching requests…</string>
+    <string name="could_not_fetch_supplies">Could not fetch supplies</string>
+    <string name="we_are_having_technical_issues">Sorry, we are having technical issues. Please try again later…</string>
+    <string name="section_header_approved">Approved Items</string>
+    <string name="section_header_processed">Processed Items</string>
+    <string name="section_header_pending">Pending Items</string>
+    <string name="section_header_denied">Denied Items</string>
+    <string name="see_order_history">See Order History</string>
 </resources>

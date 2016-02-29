@@ -17,6 +17,8 @@ public abstract class GlobalRestCallback<T> implements Callback<T> {
         baseActivity.dismissProgressDialog();
         if(t instanceof NoNetworkException){
             baseActivity.showMaterialDialog(R.string.no_network_available);
+        } else {
+            baseActivity.showMaterialDialog(R.string.we_are_having_technical_issues);
         }
     }
 }
