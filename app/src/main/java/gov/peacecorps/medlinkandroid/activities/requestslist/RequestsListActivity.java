@@ -56,7 +56,7 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
         initRequestListRecyclerView();
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.newOrderFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/sectionNameTv"
-        style="@style/AppTheme.TextSectionHeader"
+        style="@style/AppTheme.NoActionBar.TextSectionHeader"
         tools:text="Section Header" />
 
     <View style="@style/Divider" />

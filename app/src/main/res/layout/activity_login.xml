@@ -13,7 +13,7 @@
         android:src="@drawable/logo" />
 
     <TextView
-        style="@style/AppTheme.TextTitle"
+        style="@style/AppTheme.NoActionBar.TextTitle"
         android:text="@string/app_name" />
 
     <EditText
@@ -34,7 +34,7 @@
 
     <Button
         android:id="@+id/submitBtn"
-        style="@style/AppTheme.Button"
+        style="@style/AppTheme.NoActionBar.Button"
         android:layout_marginTop="20dp"
         android:enabled="false"
         android:text="@string/btn_log_in" />

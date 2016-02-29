@@ -30,4 +30,6 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="marking_supply_as_received">Marking supply as received…</string>
+    <string name="header_backdrop">Header backdrop</string>
+    <string name="actionable_orders">Actionable Orders</string>
 </resources>
