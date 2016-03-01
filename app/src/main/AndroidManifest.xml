@@ -21,14 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.requestslist.RequestsListActivity"
             android:label="@string/actionable_orders" />
-
         <activity
             android:name=".activities.requestdetail.RequestDetailActivity"
             android:label="@string/order_details"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activities.createrequest.CreateRequestActivity"
+            android:label="@string/title_activity_create_request"
             android:theme="@style/AppTheme.ActionBar" />
     </application>
 
