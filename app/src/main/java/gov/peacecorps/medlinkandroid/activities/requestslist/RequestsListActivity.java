@@ -1,5 +1,6 @@
 package gov.peacecorps.medlinkandroid.activities.requestslist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
+import gov.peacecorps.medlinkandroid.activities.createrequest.CreateRequestActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
@@ -74,10 +76,14 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
         newOrderFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: open activity to make a new request
-                Snackbar.make(view, R.string.not_yet_implemented, Snackbar.LENGTH_SHORT).show();
+                goToCreateRequestsActivity();
             }
         });
+    }
+
+    private void goToCreateRequestsActivity() {
+        Intent intent = new Intent(this, CreateRequestActivity.class);
+        startActivity(intent);
     }
 
     private void initRequestListRecyclerView() {

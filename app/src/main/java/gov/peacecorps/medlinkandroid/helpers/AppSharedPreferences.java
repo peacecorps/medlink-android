@@ -91,10 +91,14 @@ public class AppSharedPreferences {
     }
 
     private void initializeSupplyMap() throws IOException {
-        List<Supply> suppliesList = objectMapper.readValue(getString(PreferenceKey.SUPPLIES_LIST), new TypeReference<List<Supply>>(){});
+        List<Supply> suppliesList = getSupplies();
         for (Supply supply : suppliesList) {
             suppliesMap.put(supply.getId(), supply);
         }
+    }
+
+    public List<Supply> getSupplies() throws IOException {
+        return objectMapper.readValue(getString(PreferenceKey.SUPPLIES_LIST), new TypeReference<List<Supply>>(){});
     }
 
     public void deleteUser() {

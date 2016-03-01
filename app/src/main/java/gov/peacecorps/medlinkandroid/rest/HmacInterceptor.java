@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
 import okio.Buffer;
+import okio.ByteString;
 
 public class HmacInterceptor implements Interceptor {
 
@@ -58,7 +59,7 @@ public class HmacInterceptor implements Interceptor {
             final Buffer buffer = new Buffer();
             request.body().writeTo(buffer);
 
-            return hmacSigner.getMD5Hash(buffer.readByteArray());
+            return ByteString.of(buffer.readByteArray()).md5().base64();
         } else {
             return "";
         }

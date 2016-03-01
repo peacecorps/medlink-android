@@ -33,4 +33,10 @@
     <string name="header_backdrop">Header backdrop</string>
     <string name="actionable_orders">Actionable Orders</string>
     <string name="not_yet_implemented">Not yet implemented</string>
+    <string name="title_activity_create_request">New Order</string>
+    <string name="special_instructions">Special Instructions</string>
+    <string name="submit_order">Submit Order</string>
+    <string name="select_supplies">Select Supplies</string>
+    <string name="submitting_new_order">Submitting new order…</string>
+    <string name="your_order_has_been_submitted">Your order has been submitted</string>
 </resources>

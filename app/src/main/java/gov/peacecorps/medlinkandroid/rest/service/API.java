@@ -1,5 +1,6 @@
 package gov.peacecorps.medlinkandroid.rest.service;
 
+import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
 import gov.peacecorps.medlinkandroid.rest.models.request.login.LoginRequest;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.GetRequestsListResponse;
 import gov.peacecorps.medlinkandroid.rest.models.response.BaseResponse;
@@ -21,6 +22,9 @@ public interface API {
     @GET("requests")
     Call<GetRequestsListResponse> getRequestsList();
 
-    @POST("/responses/{supply_id}/mark_received")
+    @POST("requests")
+    Call<BaseResponse> submitNewRequest(@Body SubmitNewRequest submitNewRequest);
+
+    @POST("responses/{supply_id}/mark_received")
     Call<BaseResponse> markSupplyAsReceived(@Path("supply_id") Integer supplyId);
 }
