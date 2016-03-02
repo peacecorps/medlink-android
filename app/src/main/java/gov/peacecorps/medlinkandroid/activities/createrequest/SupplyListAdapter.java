@@ -52,7 +52,7 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
     @Override
     public void onBindViewHolder(SupplyViewHolder holder, final int position) {
         final Supply supply = supplies.get(position);
-        holder.supplyNameTv.setText(supply.getName());
+        holder.supplyNameTv.setText(supply.getNameAndShortCode());
 
         holder.supplySelectCb.setOnCheckedChangeListener(null);
         holder.supplySelectCb.setChecked(checkedListPositions.contains(position));
