@@ -6,39 +6,26 @@
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginTop="@dimen/activity_vertical_margin">
 
-    <ImageButton
-        android:id="@+id/supplyActionBtn"
-        style="@style/Button"
+    <CheckBox
+        android:id="@+id/supplySelectCb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:contentDescription="@string/perform_supply_action"
-        android:src="@android:drawable/checkbox_on_background" />
+        android:theme="@android:style/Theme.Holo.Light" />
 
     <TextView
         android:id="@+id/supplyNameTv"
         style="@style/AppTheme.NoActionBar.TextOrderHeader"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/supplyActionBtn"
-        android:layout_toStartOf="@id/supplyActionBtn"
-        android:gravity="bottom"
-        tools:text="Supply Name" />
-
-    <TextView
-        android:id="@+id/supplyStatusTv"
-        style="@style/AppTheme.NoActionBar.TextOrderDetails"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/supplyNameTv"
-        android:layout_toLeftOf="@id/supplyActionBtn"
-        android:layout_toStartOf="@id/supplyActionBtn"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/supplySelectCb"
+        android:layout_toStartOf="@id/supplySelectCb"
         android:gravity="bottom"
-        tools:text="Supply Status" />
+        tools:text="Supply Name" />
 
 </RelativeLayout>

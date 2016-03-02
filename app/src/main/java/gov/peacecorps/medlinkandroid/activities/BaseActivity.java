@@ -71,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         });
     }
 
-    private void showInfoDialog(int resId, MaterialDialog.ButtonCallback callback) {
+    public void showInfoDialog(int resId, MaterialDialog.ButtonCallback callback) {
         dialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(resId)

@@ -10,25 +10,28 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".activities.login.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.requestslist.RequestsListActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:label="@string/actionable_orders" />
         <activity
             android:name=".activities.requestdetail.RequestDetailActivity"
-            android:label="@string/order_details"/>
+            android:label="@string/order_details"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".activities.createrequest.CreateRequestActivity"
+            android:label="@string/title_activity_create_request"
+            android:theme="@style/AppTheme.ActionBar" />
     </application>
 
 </manifest>

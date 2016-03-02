@@ -24,6 +24,10 @@ public class Supply {
         return name;
     }
 
+    public String getNameAndShortCode() {
+        return String.format("%s (%s)", name, shortCode);
+    }
+
     public void setName(String name) {
         this.name = name;
     }

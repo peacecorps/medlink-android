@@ -7,12 +7,12 @@
 
     <TextView
         android:id="@+id/orderDateTv"
-        style="@style/AppTheme.TextOrderHeader"
+        style="@style/AppTheme.NoActionBar.TextOrderHeader"
         tools:text="Order Number and Status" />
 
     <TextView
         android:id="@+id/suppliesSnippetTv"
-        style="@style/AppTheme.TextOrderDetails"
+        style="@style/AppTheme.NoActionBar.TextOrderDetails"
         android:layout_below="@id/orderDateTv"
         tools:text="Order Details" />
 

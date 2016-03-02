@@ -1,15 +1,19 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.NoActionBar" parent="Base.Theme.MedlinkAndroid.NoActionBar" />
+
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/offWhite</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="Base.Theme.MedlinkAndroid.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/offWhite</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -20,10 +24,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginTop">2dp</item>
-        <item name="android:background">?android:attr/listDivider</item>
+        <item name="android:background">@color/lightGray</item>
     </style>
 
-    <style name="AppTheme.TextTitle">
+    <style name="AppTheme.NoActionBar.TextTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
@@ -32,7 +36,7 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme.TextSectionHeader">
+    <style name="AppTheme.NoActionBar.TextSectionHeader">
         <item name="android:textSize">16sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -40,15 +44,15 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme.TextOrderHeader">
+    <style name="AppTheme.NoActionBar.TextOrderHeader">
         <item name="android:textSize">18sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginTop">14dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="AppTheme.TextOrderDetails">
+    <style name="AppTheme.NoActionBar.TextOrderDetails">
         <item name="android:textSize">16sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -56,11 +60,14 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="AppTheme.Button">
+    <style name="AppTheme.NoActionBar.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:padding">10dp</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
