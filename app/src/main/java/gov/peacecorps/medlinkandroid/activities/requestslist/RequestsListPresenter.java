@@ -23,9 +23,11 @@ public class RequestsListPresenter {
         getRequestsListResponseCall.enqueue(new GlobalRestCallback<GetRequestsListResponse>(requestsListView.getBaseActivity()) {
             @Override
             public void onResponse(Response<GetRequestsListResponse> response, Retrofit retrofit) {
-                requestsListView.getBaseActivity().dismissProgressDialog();
-                if(response.isSuccess()){
+                if (response.isSuccess()) {
+                    requestsListView.getBaseActivity().dismissProgressDialog();
                     requestsListView.displayRequests(response.body().getRequests());
+                } else {
+                    requestsListView.getBaseActivity().showInfoDialog(R.string.we_are_having_technical_issues);
                 }
             }
         });

@@ -1,7 +1,5 @@
 package gov.peacecorps.medlinkandroid.rest;
 
-import android.util.Log;
-
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
@@ -18,6 +16,7 @@ import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
 import okio.Buffer;
 import okio.ByteString;
+import timber.log.Timber;
 
 public class HmacInterceptor implements Interceptor {
 
@@ -47,8 +46,9 @@ public class HmacInterceptor implements Interceptor {
     private Request augmentRequestWithAuthenticationHeaders(Request request) throws IOException {
         String md5ContentHash = getContentMD5Hash(request);
         String date = dateFormat.format(Calendar.getInstance().getTime());
-        String plainText = CONTENT_TYPE_APPLICATION_JSON + "," + md5ContentHash + "," + request.url().getPath() + "," + date;
-        String authHeader = "APIAuth " + hmacSigner.getHmac(plainText);
+        String path = request.url().getPath();
+
+        String authHeader = buildAuthenticationHeader(path, md5ContentHash, date);
 
         Request augmentedRequest = request
                 .newBuilder()
@@ -65,10 +65,21 @@ public class HmacInterceptor implements Interceptor {
         return augmentedRequest;
     }
 
+    private String buildAuthenticationHeader(String path, String md5ContentHash, String date) {
+        return "APIAuth " + hmacSigner.getHmac(buildCanonicalString(path, md5ContentHash, date));
+    }
+
+    private String buildCanonicalString(String path, String md5ContentHash, String date) {
+        String canonicalString = CONTENT_TYPE_APPLICATION_JSON + "," + md5ContentHash + "," + path + "," + date;;
+        Timber.d("Canonical string: %s", canonicalString);
+
+        return canonicalString;
+    }
+
     private void logHeaders(Request request) {
         Headers headers = request.headers();
         for (String headerName : headers.names()) {
-            Log.d(TAG, String.format("%s: %s", headerName, headers.get(headerName)));
+            Timber.d("%s: %s", headerName, headers.get(headerName));
         }
     }
 
@@ -79,9 +90,7 @@ public class HmacInterceptor implements Interceptor {
 
             byte[] payloadBytes = buffer.readByteArray();
 
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, String.format("Payload: %s", new String(payloadBytes)));
-            }
+            Timber.d("Payload: %s", new String(payloadBytes));
 
             return ByteString.of(payloadBytes).md5().base64();
         } else {

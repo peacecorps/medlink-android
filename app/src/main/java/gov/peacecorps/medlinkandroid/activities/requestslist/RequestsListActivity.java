@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +46,9 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
     @Bind(R.id.orderHistoryFab)
     FloatingActionButton orderHistoryFab;
 
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerRequestsListComponent
@@ -79,6 +83,13 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
                 goToCreateRequestsActivity();
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestsListPresenter.getRequestsList();
+            }
+        });
     }
 
     private void goToCreateRequestsActivity() {
@@ -100,5 +111,6 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
     @Override
     public void displayRequests(List<Request> requests) {
         requestsListAdapter.updateRequests(requests);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

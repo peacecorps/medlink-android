@@ -1,7 +1,6 @@
 package gov.peacecorps.medlinkandroid.helpers;
 
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -10,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import gov.peacecorps.medlinkandroid.BuildConfig;
+import timber.log.Timber;
 
 public class HmacSigner {
 
@@ -43,11 +42,9 @@ public class HmacSigner {
         Mac mac = Mac.getInstance("HmacSHA1");
         String secretKey = sharedPreferences.getUser().getSecretKey();
 
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, String.format("Secret key: %s", secretKey));
-        }
+        Timber.d("Secret key: %s", secretKey);
 
-        SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "RAW");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes("utf-8"), "RAW");
         mac.init(secretKeySpec);
 
         return mac;
