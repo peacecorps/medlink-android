@@ -7,4 +7,5 @@ import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request
 
 public interface RequestsListView extends BaseView {
     void displayRequests(List<Request> requests);
+    void clearSwipeAnimation();
 }

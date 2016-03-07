@@ -47,7 +47,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(sharedPreferences.hasUser()){
+        if (sharedPreferences.hasUser()) {
             goToRequestsListActivity();
             return;
         }
@@ -65,8 +65,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @OnTextChanged({R.id.emailEt, R.id.passwordEt})
-    public void onTextChanged(){
-        if(isEmailValid() && isPasswordValid()) {
+    public void onTextChanged() {
+        if (isEmailValid() && isPasswordValid()) {
             submitBtn.setEnabled(true);
         } else {
             submitBtn.setEnabled(false);
@@ -83,7 +83,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @OnClick(R.id.submitBtn)
-    public void onSubmitBtnClick(){
+    public void onSubmitBtnClick() {
         loginPresenter.loginUser(emailEt.getText().toString(), passwordEt.getText().toString());
     }
 }

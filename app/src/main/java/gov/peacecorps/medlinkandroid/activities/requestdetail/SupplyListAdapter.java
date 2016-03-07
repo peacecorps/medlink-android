@@ -21,7 +21,6 @@ import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 import gov.peacecorps.medlinkandroid.helpers.UiUtils;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
-import gov.peacecorps.medlinkandroid.rest.models.response.BaseResponse;
 import gov.peacecorps.medlinkandroid.rest.service.API;
 import retrofit.Call;
 import retrofit.Response;
@@ -80,14 +79,13 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
                                     });
                         }
 
-
                         private void markSupplyAsReceived(Supply supply) {
-                            Call<BaseResponse> baseResponseCall = api.markSupplyAsReceived(supply.getId());
+                            Call<Void> baseResponseCall = api.markSupplyAsReceived(supply.getResponse().getId());
                             final BaseActivity baseActivity = requestDetailView.getBaseActivity();
                             baseActivity.showProgressDialog(R.string.marking_supply_as_received);
-                            baseResponseCall.enqueue(new GlobalRestCallback<BaseResponse>(baseActivity) {
+                            baseResponseCall.enqueue(new GlobalRestCallback<Void>(baseActivity) {
                                 @Override
-                                public void onResponse(Response<BaseResponse> response, Retrofit retrofit) {
+                                public void onResponse(Response<Void> response, Retrofit retrofit) {
                                     baseActivity.dismissProgressDialog();
                                     if(response.isSuccess()) {
                                         holder.supplyActionBtn.setEnabled(false);

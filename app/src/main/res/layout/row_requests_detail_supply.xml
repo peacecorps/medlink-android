@@ -8,7 +8,7 @@
 
     <ImageButton
         android:id="@+id/supplyActionBtn"
-        style="@style/Button"
+        style="@style/AppTheme.NoActionBar.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -16,7 +16,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/perform_supply_action"
-        android:src="@android:drawable/checkbox_on_background" />
+        android:src="@drawable/ambulance" />
 
     <TextView
         android:id="@+id/supplyNameTv"

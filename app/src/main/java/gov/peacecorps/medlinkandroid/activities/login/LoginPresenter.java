@@ -5,7 +5,6 @@ import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 import gov.peacecorps.medlinkandroid.helpers.DataConverter;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.login.LoginRequest;
-import gov.peacecorps.medlinkandroid.rest.models.response.getsupplies.GetSuppliesResponse;
 import gov.peacecorps.medlinkandroid.rest.models.response.login.LoginResponse;
 import gov.peacecorps.medlinkandroid.rest.service.API;
 import retrofit.Call;
@@ -31,26 +30,10 @@ public class LoginPresenter {
             public void onResponse(Response<LoginResponse> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
                     appSharedPreferences.setUser(DataConverter.convertLoginResponseToUser(response.body()));
-                    fetchSupplies();
+                    loginView.goToRequestsListActivity();
                 } else {
                     loginView.getBaseActivity().dismissProgressDialog();
                     loginView.getBaseActivity().showInfoDialog(R.string.invalid_login);
-                }
-            }
-        });
-    }
-
-    private void fetchSupplies() {
-        Call<GetSuppliesResponse> getSuppliesResponseCall = api.getSupplies();
-        getSuppliesResponseCall.enqueue(new GlobalRestCallback<GetSuppliesResponse>(loginView.getBaseActivity()) {
-            @Override
-            public void onResponse(Response<GetSuppliesResponse> response, Retrofit retrofit) {
-                loginView.getBaseActivity().dismissProgressDialog();
-                if (response.isSuccess()) {
-                    appSharedPreferences.setSupplies(DataConverter.convertGetSuppliesResponseToSupply(response.body()));
-                    loginView.goToRequestsListActivity();
-                } else {
-                    loginView.getBaseActivity().showInfoDialog(R.string.could_not_fetch_supplies);
                 }
             }
         });

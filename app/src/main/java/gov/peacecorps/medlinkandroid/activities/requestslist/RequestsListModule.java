@@ -17,8 +17,8 @@ public class RequestsListModule {
 
     @Provides
     @ActivityScope
-    RequestsListPresenter providePresenter(API api){
-        return new RequestsListPresenter(requestsListView, api);
+    RequestsListPresenter providePresenter(API api, AppSharedPreferences appSharedPreferences){
+        return new RequestsListPresenter(requestsListView, api, appSharedPreferences);
     }
 
     @Provides

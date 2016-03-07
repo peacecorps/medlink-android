@@ -87,7 +87,7 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestsListPresenter.getRequestsList();
+                requestsListPresenter.getSupplies();
             }
         });
     }
@@ -105,12 +105,17 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
     @Override
     protected void onResume() {
         super.onResume();
-        requestsListPresenter.getRequestsList();
+        requestsListPresenter.getSupplies();
     }
 
     @Override
     public void displayRequests(List<Request> requests) {
         requestsListAdapter.updateRequests(requests);
+        clearSwipeAnimation();
+    }
+
+    @Override
+    public void clearSwipeAnimation() {
         swipeRefreshLayout.setRefreshing(false);
     }
 }
