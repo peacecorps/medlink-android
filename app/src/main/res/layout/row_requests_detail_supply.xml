@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/supplyNameTv"
-        style="@style/AppTheme.TextOrderHeader"
+        style="@style/AppTheme.NoActionBar.TextOrderHeader"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/supplyStatusTv"
-        style="@style/AppTheme.TextOrderDetails"
+        style="@style/AppTheme.NoActionBar.TextOrderDetails"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

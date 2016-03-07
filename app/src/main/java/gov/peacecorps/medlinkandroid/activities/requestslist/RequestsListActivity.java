@@ -2,6 +2,7 @@ package gov.peacecorps.medlinkandroid.activities.requestslist;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,12 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.newOrderFab)
+    FloatingActionButton newOrderFab;
+
+    @Bind(R.id.orderHistoryFab)
+    FloatingActionButton orderHistoryFab;
+
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
         DaggerRequestsListComponent
@@ -56,11 +63,19 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
         initRequestListRecyclerView();
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        orderHistoryFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: open activity that shows order history
+                Snackbar.make(view, R.string.not_yet_implemented, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        newOrderFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO: open activity to make a new request
+                Snackbar.make(view, R.string.not_yet_implemented, Snackbar.LENGTH_SHORT).show();
             }
         });
     }

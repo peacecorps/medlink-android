@@ -5,7 +5,7 @@
     <color name="colorAccent">#4A90E2</color>
     <color name="colorSecondary">#D04E02</color>
     <color name="colorSecondaryDark">#B14708</color>
-    <color name="black">#000</color>
-    <color name="white">#FFF</color>
+    <color name="offWhite">#FFF5F5F5</color>
     <color name="gray">#888</color>
+    <color name="lightGray">#FFCFD8DC</color>
 </resources>
