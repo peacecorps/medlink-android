@@ -8,7 +8,7 @@ import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
-import gov.peacecorps.medlinkandroid.rest.models.response.BaseResponse;
+import gov.peacecorps.medlinkandroid.rest.models.response.createrequest.SubmitNewRequestResponse;
 import gov.peacecorps.medlinkandroid.rest.service.API;
 import retrofit.Call;
 import retrofit.Response;
@@ -24,11 +24,11 @@ public class CreateRequestPresenter {
     }
 
     public void submitNewRequest(Set<Integer> selectedSupplyIds, String specialInstructions) {
-        Call<BaseResponse> submitNewRequestCall = api.submitNewRequest(buildNewRequestPayload(selectedSupplyIds, specialInstructions));
+        Call<SubmitNewRequestResponse> submitNewRequestCall = api.submitNewRequest(buildNewRequestPayload(selectedSupplyIds, specialInstructions));
         baseActivity.showProgressDialog(R.string.submitting_new_order);
-        submitNewRequestCall.enqueue(new GlobalRestCallback<BaseResponse>(baseActivity) {
+        submitNewRequestCall.enqueue(new GlobalRestCallback<SubmitNewRequestResponse>(baseActivity) {
             @Override
-            public void onResponse(Response<BaseResponse> response, Retrofit retrofit) {
+            public void onResponse(Response<SubmitNewRequestResponse> response, Retrofit retrofit) {
                 baseActivity.dismissProgressDialog();
                 if (response.isSuccess()) {
                     baseActivity.showInfoDialog(R.string.your_order_has_been_submitted,

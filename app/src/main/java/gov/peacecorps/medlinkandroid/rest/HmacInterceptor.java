@@ -20,9 +20,8 @@ import timber.log.Timber;
 
 public class HmacInterceptor implements Interceptor {
 
-    private final static String CONTENT_TYPE_APPLICATION_JSON = "application/json";
+    private final static String CONTENT_TYPE_APPLICATION_JSON = "application/json; charset=UTF-8";
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
-    private static final String TAG = HmacInterceptor.class.getSimpleName();
 
     private final AppSharedPreferences appSharedPreferences;
     private final HmacSigner hmacSigner;

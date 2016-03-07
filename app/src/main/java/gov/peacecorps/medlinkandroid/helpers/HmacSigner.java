@@ -13,7 +13,6 @@ import timber.log.Timber;
 
 public class HmacSigner {
 
-    private static final String TAG = HmacSigner.class.getSimpleName();
     private AppSharedPreferences sharedPreferences;
 
     public HmacSigner(AppSharedPreferences sharedPreferences) {
