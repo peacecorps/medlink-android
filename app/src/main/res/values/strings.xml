@@ -17,7 +17,8 @@
     <string name="section_header_pending">Pending Items</string>
     <string name="section_header_denied">Denied Items</string>
     <string name="see_order_history">See Order History</string>
-    <string name="perform_supply_action">Mark supply as received or flag for PCMO action</string>
+    <string name="mark_as_received">Mark supply as received</string>
+    <string name="flag_supply">Flag supply</string>
     <string name="order_details">Order Details</string>
     <string name="approved_for_delivery">Approved for delivery</string>
     <string name="denied_by_pcmo">Denied by PCMO</string>
@@ -38,4 +39,8 @@
     <string name="select_supplies">Select Supplies</string>
     <string name="submitting_new_order">Submitting new order…</string>
     <string name="your_order_has_been_submitted">Your order has been submitted</string>
+    <string name="supply_marked_as_received">Supply marked as received</string>
+    <string name="supply_flagged_for_pcmo">Supply flagged for PCMO</string>
+    <string name="flagging_supply_for_pcmo">Flagging supply for PCMO</string>
+    <string name="are_you_sure_not_received">Are you sure you haven\'t received this supply?</string>
 </resources>

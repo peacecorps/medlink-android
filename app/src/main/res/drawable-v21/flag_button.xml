@@ -1,0 +1,13 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+    <item>
+        <selector>
+            <item
+                android:drawable="@android:color/holo_red_light"
+                android:state_enabled="true" />
+            <item
+                android:drawable="@color/lightGray"
+                android:state_enabled="false" />
+        </selector>
+    </item>
+</ripple>

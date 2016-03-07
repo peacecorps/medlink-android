@@ -22,9 +22,6 @@ import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
 public class RequestDetailActivity extends BaseActivity implements RequestDetailView {
 
     @Inject
-    RequestDetailPresenter requestDetailPresenter;
-
-    @Inject
     SupplyListAdapter supplyListAdapter;
 
     @Bind(R.id.orderDateTv)

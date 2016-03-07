@@ -25,6 +25,9 @@ public interface API {
     @POST("requests")
     Call<SubmitNewRequestResponse> submitNewRequest(@Body SubmitNewRequest submitNewRequest);
 
-    @POST("responses/{supply_id}/mark_received")
-    Call<Void> markSupplyAsReceived(@Path("supply_id") Integer supplyId);
+    @POST("responses/{supply_response_id}/mark_received")
+    Call<Void> markSupplyAsReceived(@Path("supply_response_id") Integer supplyResponseId);
+
+    @POST("responses/{supply_response_id}/flag")
+    Call<Void> flagSupply(@Path("supply_response_id") Integer supplyResponseId);
 }

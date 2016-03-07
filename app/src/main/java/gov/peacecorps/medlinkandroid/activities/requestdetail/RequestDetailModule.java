@@ -17,12 +17,6 @@ public class RequestDetailModule {
 
     @Provides
     @ActivityScope
-    RequestDetailPresenter provideRequestDetailPresenter(){
-        return new RequestDetailPresenter(requestDetailView);
-    }
-
-    @Provides
-    @ActivityScope
     SupplyListAdapter provideSupplyListAdapter(AppSharedPreferences appSharedPreferences, API api){
         return new SupplyListAdapter(requestDetailView, appSharedPreferences, api);
     }

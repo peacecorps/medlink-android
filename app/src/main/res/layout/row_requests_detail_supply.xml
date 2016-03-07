@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/activity_vertical_margin">
 
     <ImageButton
-        android:id="@+id/supplyActionBtn"
+        android:id="@+id/flagSupplyBtn"
         style="@style/AppTheme.NoActionBar.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,8 +15,24 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:contentDescription="@string/perform_supply_action"
-        android:src="@drawable/ambulance" />
+        android:background="@drawable/flag_button"
+        android:contentDescription="@string/flag_supply"
+        android:src="@drawable/ic_close_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/markReceivedBtn"
+        style="@style/AppTheme.NoActionBar.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/flagSupplyBtn"
+        android:layout_toStartOf="@id/flagSupplyBtn"
+        android:background="@drawable/received_button"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/mark_as_received"
+        android:src="@drawable/ic_check_white_24dp" />
 
     <TextView
         android:id="@+id/supplyNameTv"
@@ -24,8 +40,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/supplyActionBtn"
-        android:layout_toStartOf="@id/supplyActionBtn"
+        android:layout_toLeftOf="@id/markReceivedBtn"
+        android:layout_toStartOf="@id/markReceivedBtn"
         android:gravity="bottom"
         tools:text="Supply Name" />
 
@@ -36,8 +52,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/supplyNameTv"
-        android:layout_toLeftOf="@id/supplyActionBtn"
-        android:layout_toStartOf="@id/supplyActionBtn"
+        android:layout_toLeftOf="@id/markReceivedBtn"
+        android:layout_toStartOf="@id/markReceivedBtn"
         android:gravity="bottom"
         tools:text="Supply Status" />
 
