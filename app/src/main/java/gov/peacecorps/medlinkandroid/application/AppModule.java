@@ -10,7 +10,6 @@ import dagger.Provides;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
-import gov.peacecorps.medlinkandroid.helpers.NetworkManager;
 
 @Module
 public class AppModule {
@@ -42,11 +41,5 @@ public class AppModule {
     @Singleton
     DataManager provideDataManager(AppSharedPreferences appSharedPreferences){
         return new DataManager(appSharedPreferences);
-    }
-
-    @Provides
-    @Singleton
-    NetworkManager provideNetworkManager(Context context){
-        return new NetworkManager(context);
     }
 }

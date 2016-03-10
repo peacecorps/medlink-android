@@ -119,7 +119,7 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         RequestListItem requestListItem = requestsList.get(position);
 
-        if (requestListItem.isSectionHeader()){
+        if (requestListItem.isSectionHeader()) {
             return VIEW_TYPE_SECTION_HEADER;
         }
 
@@ -166,9 +166,13 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void getUnsubmittedRequests() {
         unsubmittedRequests.clear();
-        addSection(unsubmittedRequests, R.string.section_header_unsubmitted_orders);
 
-        for(SubmitNewRequest newRequest: dataManager.getUnsubmittedRequests()){
+        List<SubmitNewRequest> unsubmittedRequestsFromSharedPrefs = dataManager.getUnsubmittedRequests();
+        if (!unsubmittedRequestsFromSharedPrefs.isEmpty()) {
+            addSection(unsubmittedRequests, R.string.section_header_unsubmitted_orders);
+        }
+
+        for (SubmitNewRequest newRequest : unsubmittedRequestsFromSharedPrefs) {
             unsubmittedRequests.add(DataConverter.convertSubmitNewRequestToRequestListItem(newRequest));
         }
     }
@@ -197,6 +201,9 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         sortedRequests.clear();
+        if (requests.isEmpty()) {
+            return sortedRequests;
+        }
 
         addSection(sortedRequests, R.string.section_header_submitted_orders);
 
@@ -208,7 +215,7 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return sortedRequests;
     }
 
-    private void addSection(List<RequestListItem> sortedRequests, int sectionHeaderResId){
+    private void addSection(List<RequestListItem> sortedRequests, int sectionHeaderResId) {
         sortedRequests.add(createSectionHeader(context.getString(sectionHeaderResId)));
     }
 

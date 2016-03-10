@@ -3,7 +3,7 @@
     <string name="submit">Submit</string>
     <string name="btn_log_in">Log In</string>
     <string name="okay">OK</string>
-    <string name="no_network_available">No network connection available. Please try again later.</string>
+    <string name="no_network_available">No network connection available.</string>
     <string name="invalid_login">Invalid login credentials. Please check your email and password and try again.</string>
     <string name="logout">Log Out</string>
     <string name="logging_out">Logging out…</string>
@@ -47,4 +47,5 @@
     <string name="section_header_submitted_orders">Submitted Orders</string>
     <string name="not_submitted">Not submitted</string>
     <string name="section_header_unsubmitted_orders">Unsubmitted Orders</string>
+    <string name="send_order_by_sms">Would you like to create this order via SMS?</string>
 </resources>
