@@ -8,9 +8,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.data.models.Supply;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 
 public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.SupplyViewHolder> {
 
@@ -26,21 +24,17 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
     private List<Supply> supplies;
     private final Set<Integer> selectedSupplyIds, checkedListPositions;
 
-    public SupplyListAdapter(CreateRequestView createRequestView, AppSharedPreferences appSharedPreferences) {
+    public SupplyListAdapter(CreateRequestView createRequestView, DataManager dataManager) {
         this.createRequestView = createRequestView;
         this.selectedSupplyIds = new HashSet<>();
         this.checkedListPositions = new HashSet<>();
 
-        initSuppliesList(appSharedPreferences);
+        initSuppliesList(dataManager);
     }
 
-    private void initSuppliesList(AppSharedPreferences appSharedPreferences) {
-        this.supplies = new LinkedList<>();
-        try {
-            supplies.addAll(appSharedPreferences.getSupplies());
-            notifyDataSetChanged();
-        } catch (IOException e) {
-        }
+    private void initSuppliesList(DataManager dataManager) {
+        this.supplies = dataManager.getSupplies();
+        notifyDataSetChanged();
     }
 
     @Override

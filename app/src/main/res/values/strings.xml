@@ -12,10 +12,10 @@
     <string name="hint_password">Password</string>
     <string name="fetching_requests">Fetching requests…</string>
     <string name="we_are_having_technical_issues">Sorry, we are having technical issues. Please try again later…</string>
-    <string name="section_header_approved">Approved Items</string>
-    <string name="section_header_processed">Processed Items</string>
-    <string name="section_header_pending">Pending Items</string>
-    <string name="section_header_denied">Denied Items</string>
+    <string name="sub_section_header_approved">Approved Items</string>
+    <string name="sub_section_header_processed">Processed Items</string>
+    <string name="sub_section_header_pending">Pending Items</string>
+    <string name="sub_section_header_denied">Denied Items</string>
     <string name="see_order_history">See Order History</string>
     <string name="mark_as_received">Mark supply as received</string>
     <string name="flag_supply">Flag supply</string>
@@ -43,4 +43,8 @@
     <string name="supply_flagged_for_pcmo">Supply flagged for PCMO</string>
     <string name="flagging_supply_for_pcmo">Flagging supply for PCMO</string>
     <string name="are_you_sure_not_received">Are you sure you haven\'t received this supply?</string>
+    <string name="your_order_has_been_saved">Your order has been saved to be submitted when there is a network connection</string>
+    <string name="section_header_submitted_orders">Submitted Orders</string>
+    <string name="not_submitted">Not submitted</string>
+    <string name="section_header_unsubmitted_orders">Unsubmitted Orders</string>
 </resources>

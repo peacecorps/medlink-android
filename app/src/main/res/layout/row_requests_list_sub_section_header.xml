@@ -6,8 +6,10 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/sectionNameTv"
-        style="@style/AppTheme.NoActionBar.TextSectionHeader"
-        tools:text="Section Header" />
+        android:id="@+id/subSectionNameTv"
+        style="@style/AppTheme.NoActionBar.TextSubSectionHeader"
+        tools:text="Sub-section Header" />
+
+    <View style="@style/Divider" />
 
 </LinearLayout>

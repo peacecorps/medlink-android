@@ -47,7 +47,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (sharedPreferences.hasUser()) {
+        if (dataManager.hasUser()) {
             goToRequestsListActivity();
             return;
         }

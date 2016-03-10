@@ -1,10 +1,11 @@
 package gov.peacecorps.medlinkandroid.activities.requestslist;
 
-import java.io.IOException;
+import java.util.List;
 
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.data.models.Supply;
 import gov.peacecorps.medlinkandroid.helpers.DataConverter;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.GetRequestsListResponse;
 import gov.peacecorps.medlinkandroid.rest.models.response.getsupplies.GetSuppliesResponse;
@@ -16,27 +17,25 @@ import retrofit.Retrofit;
 public class RequestsListPresenter {
     private final RequestsListView requestsListView;
     private final API api;
-    private AppSharedPreferences appSharedPreferences;
+    private DataManager dataManager;
 
-    public RequestsListPresenter(RequestsListView requestsListView, API api, AppSharedPreferences appSharedPreferences) {
+    public RequestsListPresenter(RequestsListView requestsListView, API api, DataManager dataManager) {
         this.requestsListView = requestsListView;
         this.api = api;
-        this.appSharedPreferences = appSharedPreferences;
+        this.dataManager = dataManager;
     }
 
     public void getSupplies() {
         requestsListView.getBaseActivity().showProgressDialog(R.string.fetching_requests);
 
-        try {
-            appSharedPreferences.getSupplies();
-            getRequestsList();
-        } catch (IOException e) {
+        List<Supply> supplies = dataManager.getSupplies();
+        if (supplies.isEmpty()) {
             Call<GetSuppliesResponse> getSuppliesResponseCall = api.getSupplies();
             getSuppliesResponseCall.enqueue(new GlobalRestCallback<GetSuppliesResponse>(requestsListView.getBaseActivity()) {
                 @Override
                 public void onResponse(Response<GetSuppliesResponse> response, Retrofit retrofit) {
                     if (response.isSuccess()) {
-                        appSharedPreferences.setSupplies(DataConverter.convertGetSuppliesResponseToSupply(response.body()));
+                        dataManager.setSupplies(DataConverter.convertGetSuppliesResponseToSupply(response.body()));
                         getRequestsList();
                     } else {
                         requestsListView.getBaseActivity().dismissProgressDialog();
@@ -44,19 +43,31 @@ public class RequestsListPresenter {
                     }
                 }
             });
+        } else {
+            getRequestsList();
         }
     }
 
     public void getRequestsList() {
+        requestsListView.displayUnsubmittedRequests();
+
         Call<GetRequestsListResponse> getRequestsListResponseCall = api.getRequestsList();
-        getRequestsListResponseCall.enqueue(new GlobalRestCallback<GetRequestsListResponse>(requestsListView.getBaseActivity()) {
+        final GlobalRestCallback.NetworkFailureCallback networkFailureCallback = new GlobalRestCallback.NetworkFailureCallback() {
+            @Override
+            public void onNetworkFailure() {
+                requestsListView.clearSwipeAnimation();
+                super.onNetworkFailure();
+            }
+        };
+
+        getRequestsListResponseCall.enqueue(new GlobalRestCallback<GetRequestsListResponse>(requestsListView.getBaseActivity(), networkFailureCallback) {
             @Override
             public void onResponse(Response<GetRequestsListResponse> response, Retrofit retrofit) {
                 requestsListView.getBaseActivity().dismissProgressDialog();
+                requestsListView.clearSwipeAnimation();
                 if (response.isSuccess()) {
-                    requestsListView.displayRequests(response.body().getRequests());
+                    requestsListView.displaySubmittedRequests(response.body().getRequests());
                 } else {
-                    requestsListView.clearSwipeAnimation();
                     requestsListView.getBaseActivity().showInfoDialog(R.string.we_are_having_technical_issues);
                 }
             }

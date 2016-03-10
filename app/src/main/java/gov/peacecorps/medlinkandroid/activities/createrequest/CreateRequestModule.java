@@ -3,7 +3,7 @@ package gov.peacecorps.medlinkandroid.activities.createrequest;
 import dagger.Module;
 import dagger.Provides;
 import gov.peacecorps.medlinkandroid.di.annotation.ActivityScope;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.rest.service.API;
 
 @Module
@@ -16,13 +16,13 @@ public class CreateRequestModule {
 
     @Provides
     @ActivityScope
-    CreateRequestPresenter provideCreateRequestPresenter(API api){
-        return new CreateRequestPresenter(createRequestView, api);
+    CreateRequestPresenter provideCreateRequestPresenter(API api, DataManager dataManager){
+        return new CreateRequestPresenter(createRequestView, api, dataManager);
     }
 
     @Provides
     @ActivityScope
-    SupplyListAdapter provideSupplyListAdapter(AppSharedPreferences appSharedPreferences){
-        return new SupplyListAdapter(createRequestView, appSharedPreferences);
+    SupplyListAdapter provideSupplyListAdapter(DataManager dataManager){
+        return new SupplyListAdapter(createRequestView, dataManager);
     }
 }

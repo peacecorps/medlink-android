@@ -14,7 +14,7 @@ import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.login.LoginActivity;
 import gov.peacecorps.medlinkandroid.application.App;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
@@ -23,7 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     private MaterialDialog dialog;
 
     @Inject
-    protected AppSharedPreferences sharedPreferences;
+    protected DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            sharedPreferences.deleteUser();
+            dataManager.deleteUser();
             goToLoginScreen();
 
             return true;

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
 import gov.peacecorps.medlinkandroid.rest.models.response.createrequest.SubmitNewRequestResponse;
@@ -16,29 +17,41 @@ import retrofit.Retrofit;
 
 public class CreateRequestPresenter {
     private final API api;
+    private final DataManager dataManager;
     private BaseActivity baseActivity;
 
-    public CreateRequestPresenter(CreateRequestView createRequestView, API api) {
+    public CreateRequestPresenter(CreateRequestView createRequestView, API api, DataManager dataManager) {
         this.baseActivity = createRequestView.getBaseActivity();
         this.api = api;
+        this.dataManager = dataManager;
     }
 
     public void submitNewRequest(Set<Integer> selectedSupplyIds, String specialInstructions) {
-        Call<SubmitNewRequestResponse> submitNewRequestCall = api.submitNewRequest(buildNewRequestPayload(selectedSupplyIds, specialInstructions));
         baseActivity.showProgressDialog(R.string.submitting_new_order);
-        submitNewRequestCall.enqueue(new GlobalRestCallback<SubmitNewRequestResponse>(baseActivity) {
+        final SubmitNewRequest newRequestPayload = buildNewRequestPayload(selectedSupplyIds, specialInstructions);
+        final MaterialDialog.ButtonCallback finishActivityCallback = new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                super.onPositive(dialog);
+                baseActivity.finish();
+            }
+        };
+
+        final GlobalRestCallback.NetworkFailureCallback networkFailureCallback = new GlobalRestCallback.NetworkFailureCallback() {
+            @Override
+            public void onNetworkFailure() {
+                dataManager.setUnsubmittedRequest(newRequestPayload);
+                baseActivity.showInfoDialog(R.string.your_order_has_been_saved, finishActivityCallback);
+            }
+        };
+
+        Call<SubmitNewRequestResponse> submitNewRequestCall = api.submitNewRequest(newRequestPayload);
+        submitNewRequestCall.enqueue(new GlobalRestCallback<SubmitNewRequestResponse>(baseActivity, networkFailureCallback) {
             @Override
             public void onResponse(Response<SubmitNewRequestResponse> response, Retrofit retrofit) {
                 baseActivity.dismissProgressDialog();
                 if (response.isSuccess()) {
-                    baseActivity.showInfoDialog(R.string.your_order_has_been_submitted,
-                            new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    super.onPositive(dialog);
-                                    baseActivity.finish();
-                                }
-                            });
+                    baseActivity.showInfoDialog(R.string.your_order_has_been_submitted, finishActivityCallback);
                 } else {
                     baseActivity.showInfoDialog(R.string.we_are_having_technical_issues);
                 }

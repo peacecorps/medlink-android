@@ -21,7 +21,6 @@ import gov.peacecorps.medlinkandroid.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.activities.createrequest.CreateRequestActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
-import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
 
 public class RequestsListActivity extends BaseActivity implements RequestsListView {
 
@@ -109,9 +108,13 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
     }
 
     @Override
-    public void displayRequests(List<Request> requests) {
-        requestsListAdapter.updateRequests(requests);
-        clearSwipeAnimation();
+    public void displaySubmittedRequests(List<RequestListItem> requests) {
+        requestsListAdapter.updateSubmittedRequests(requests);
+    }
+
+    @Override
+    public void displayUnsubmittedRequests() {
+        requestsListAdapter.updateUnsubmittedRequests();
     }
 
     @Override

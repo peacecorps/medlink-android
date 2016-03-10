@@ -13,10 +13,10 @@ import timber.log.Timber;
 
 public class HmacSigner {
 
-    private AppSharedPreferences sharedPreferences;
+    private DataManager dataManager;
 
-    public HmacSigner(AppSharedPreferences sharedPreferences) {
-        this.sharedPreferences = sharedPreferences;
+    public HmacSigner(DataManager dataManager) {
+        this.dataManager = dataManager;
     }
 
     public String getHmac(String input) {
@@ -30,7 +30,7 @@ public class HmacSigner {
     }
 
     private String prependUserId(byte[] digest) {
-        return sharedPreferences.getUser().getUserId() + ":" + Base64.encodeToString(digest, Base64.NO_WRAP);
+        return dataManager.getUser().getUserId() + ":" + Base64.encodeToString(digest, Base64.NO_WRAP);
     }
 
     private byte[] getHmacSHA1Digest(String input) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
@@ -39,7 +39,7 @@ public class HmacSigner {
 
     private Mac buildSHA1Mac() throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         Mac mac = Mac.getInstance("HmacSHA1");
-        String secretKey = sharedPreferences.getUser().getSecretKey();
+        String secretKey = dataManager.getUser().getSecretKey();
 
         Timber.d("Secret key: %s", secretKey);
 

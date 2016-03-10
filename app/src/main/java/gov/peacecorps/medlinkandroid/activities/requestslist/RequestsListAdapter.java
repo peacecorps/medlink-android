@@ -17,10 +17,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.requestdetail.RequestDetailActivity;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
 import gov.peacecorps.medlinkandroid.helpers.Constants;
 import gov.peacecorps.medlinkandroid.helpers.DataConverter;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.DateUtils;
+import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
 
@@ -30,13 +31,19 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final List<RequestListItem> requestsList;
 
     private final static int VIEW_TYPE_SECTION_HEADER = 0;
-    private final static int VIEW_TYPE_REQUEST = 1;
-    private final AppSharedPreferences appSharedPreferences;
+    private final static int VIEW_TYPE_SUB_SECTION_HEADER = 1;
+    private final static int VIEW_TYPE_REQUEST = 2;
 
-    public RequestsListAdapter(RequestsListView requestsListView, AppSharedPreferences appSharedPreferences) {
+    private final DataManager dataManager;
+    private List<RequestListItem> sortedRequests;
+    private List<RequestListItem> unsubmittedRequests;
+
+    public RequestsListAdapter(RequestsListView requestsListView, DataManager dataManager) {
         this.context = requestsListView.getBaseActivity();
-        this.appSharedPreferences = appSharedPreferences;
-        this.requestsList = new LinkedList<>();
+        this.dataManager = dataManager;
+        requestsList = new LinkedList<>();
+        sortedRequests = new LinkedList<>();
+        unsubmittedRequests = new LinkedList<>();
     }
 
     @Override
@@ -45,6 +52,9 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case VIEW_TYPE_SECTION_HEADER:
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_section_header, parent, false);
                 return new SectionHeaderViewHolder(view);
+            case VIEW_TYPE_SUB_SECTION_HEADER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_sub_section_header, parent, false);
+                return new SubSectionHeaderViewHolder(view);
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_request, parent, false);
                 return new RequestViewHolder(view);
@@ -57,9 +67,12 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (requestListItem.isSectionHeader()) {
             SectionHeaderViewHolder sectionHeaderViewHolder = (SectionHeaderViewHolder) holder;
             sectionHeaderViewHolder.sectionNameTv.setText(requestListItem.getSectionHeaderName());
+        } else if (requestListItem.isSubSectionHeader()) {
+            SubSectionHeaderViewHolder subSectionHeaderViewHolder = (SubSectionHeaderViewHolder) holder;
+            subSectionHeaderViewHolder.subSectionNameTv.setText(requestListItem.getSubSectionHeaderName());
         } else {
             RequestViewHolder requestViewHolder = (RequestViewHolder) holder;
-            requestViewHolder.orderDateTv.setText(DateUtils.getDisplayStringFromDate(requestListItem.getCreatedAt()));
+            requestViewHolder.orderDateTv.setText(DateUtils.getDisplayStringFromDate(requestListItem.getCreatedAt(), context));
             requestViewHolder.suppliesSnippetTv.setText(getSuppliesNamesSnippet(requestListItem));
             requestViewHolder.rowLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,7 +94,7 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Supply supply : requestListItem.getSupplies()) {
-            stringBuilder.append(appSharedPreferences.getSupply(supply.getId()).getName());
+            stringBuilder.append(dataManager.getSupply(supply.getId()).getName());
             stringBuilder.append(", ");
         }
 
@@ -105,8 +118,13 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemViewType(int position) {
         RequestListItem requestListItem = requestsList.get(position);
-        if (requestListItem.isSectionHeader()) {
+
+        if (requestListItem.isSectionHeader()){
             return VIEW_TYPE_SECTION_HEADER;
+        }
+
+        if (requestListItem.isSubSectionHeader()) {
+            return VIEW_TYPE_SUB_SECTION_HEADER;
         }
 
         return VIEW_TYPE_REQUEST;
@@ -120,13 +138,42 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return requestListItem;
     }
 
-    public void updateRequests(List<Request> requests) {
+    private RequestListItem createSubSectionHeader(String subSectionName) {
+        RequestListItem requestListItem = new RequestListItem();
+        requestListItem.setIsSubSectionHeader(true);
+        requestListItem.setSubSectionHeaderName(subSectionName);
+
+        return requestListItem;
+    }
+
+    public void updateUnsubmittedRequests() {
+        getUnsubmittedRequests();
+        refreshRequestsList();
+    }
+
+    public void updateSubmittedRequests(List<RequestListItem> requests) {
+        sortSubmittedRequestsByStatusAndAddSectionHeaders(requests);
+        refreshRequestsList();
+    }
+
+    private void refreshRequestsList() {
         this.requestsList.clear();
-        this.requestsList.addAll(sortRequestsByStatusAndAddSectionHeaders(requests));
+        this.requestsList.addAll(unsubmittedRequests);
+        this.requestsList.addAll(sortedRequests);
+
         notifyDataSetChanged();
     }
 
-    private List<RequestListItem> sortRequestsByStatusAndAddSectionHeaders(List<Request> requests) {
+    private void getUnsubmittedRequests() {
+        unsubmittedRequests.clear();
+        addSection(unsubmittedRequests, R.string.section_header_unsubmitted_orders);
+
+        for(SubmitNewRequest newRequest: dataManager.getUnsubmittedRequests()){
+            unsubmittedRequests.add(DataConverter.convertSubmitNewRequestToRequestListItem(newRequest));
+        }
+    }
+
+    private List<RequestListItem> sortSubmittedRequestsByStatusAndAddSectionHeaders(List<RequestListItem> requests) {
         List<RequestListItem> approvedRequests = new LinkedList<>();
         List<RequestListItem> deniedRequests = new LinkedList<>();
         List<RequestListItem> pendingRequests = new LinkedList<>();
@@ -149,20 +196,26 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
 
-        List<RequestListItem> sortedRequests = new LinkedList<>();
+        sortedRequests.clear();
 
-        addSection(sortedRequests, approvedRequests, R.string.section_header_approved);
-        addSection(sortedRequests, processedRequests, R.string.section_header_processed);
-        addSection(sortedRequests, pendingRequests, R.string.section_header_pending);
-        addSection(sortedRequests, deniedRequests, R.string.section_header_denied);
+        addSection(sortedRequests, R.string.section_header_submitted_orders);
+
+        addSubSection(sortedRequests, approvedRequests, R.string.sub_section_header_approved);
+        addSubSection(sortedRequests, processedRequests, R.string.sub_section_header_processed);
+        addSubSection(sortedRequests, pendingRequests, R.string.sub_section_header_pending);
+        addSubSection(sortedRequests, deniedRequests, R.string.sub_section_header_denied);
 
         return sortedRequests;
     }
 
-    private void addSection(List<RequestListItem> sortedRequests, List<RequestListItem> sectionRequests, int sectionHeaderResId) {
-        if (!sectionRequests.isEmpty()) {
-            sortedRequests.add(createSectionHeader(context.getString(sectionHeaderResId)));
-            sortedRequests.addAll(sectionRequests);
+    private void addSection(List<RequestListItem> sortedRequests, int sectionHeaderResId){
+        sortedRequests.add(createSectionHeader(context.getString(sectionHeaderResId)));
+    }
+
+    private void addSubSection(List<RequestListItem> sortedRequests, List<RequestListItem> subSectionRequests, int subSectionHeaderResId) {
+        if (!subSectionRequests.isEmpty()) {
+            sortedRequests.add(createSubSectionHeader(context.getString(subSectionHeaderResId)));
+            sortedRequests.addAll(subSectionRequests);
         }
     }
 
@@ -187,6 +240,16 @@ public class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView sectionNameTv;
 
         public SectionHeaderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public static final class SubSectionHeaderViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.subSectionNameTv)
+        TextView subSectionNameTv;
+
+        public SubSectionHeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

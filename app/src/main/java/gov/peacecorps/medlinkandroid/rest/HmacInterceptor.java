@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import gov.peacecorps.medlinkandroid.BuildConfig;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
 import okio.Buffer;
 import okio.ByteString;
@@ -23,19 +23,19 @@ public class HmacInterceptor implements Interceptor {
     private final static String CONTENT_TYPE_APPLICATION_JSON = "application/json; charset=UTF-8";
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
 
-    private final AppSharedPreferences appSharedPreferences;
+    private final DataManager dataManager;
     private final HmacSigner hmacSigner;
 
-    public HmacInterceptor(HmacSigner hmacSigner, AppSharedPreferences appSharedPreferences) {
+    public HmacInterceptor(HmacSigner hmacSigner, DataManager dataManager) {
         this.hmacSigner = hmacSigner;
-        this.appSharedPreferences = appSharedPreferences;
+        this.dataManager = dataManager;
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (appSharedPreferences.hasUser()) {
+        if (dataManager.hasUser()) {
             return chain.proceed(augmentRequestWithAuthenticationHeaders(request));
         }
 

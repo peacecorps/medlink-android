@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/orderDateTv"
-        style="@style/AppTheme.NoActionBar.TextSectionHeader"
+        style="@style/AppTheme.NoActionBar.TextSubSectionHeader"
         tools:text="27 Feb 2016, 08:06:23 PM" />
 
     <View style="@style/Divider" />

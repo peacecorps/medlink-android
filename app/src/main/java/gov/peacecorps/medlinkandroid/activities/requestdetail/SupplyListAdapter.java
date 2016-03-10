@@ -17,7 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.UiUtils;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
@@ -30,12 +30,12 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
 
     private final RequestDetailView requestDetailView;
     private final List<Supply> suppliesList;
-    private final AppSharedPreferences appSharedPreferences;
+    private final DataManager dataManager;
     private final API api;
 
-    public SupplyListAdapter(RequestDetailView requestDetailView, AppSharedPreferences appSharedPreferences, API api) {
+    public SupplyListAdapter(RequestDetailView requestDetailView, DataManager dataManager, API api) {
         this.requestDetailView = requestDetailView;
-        this.appSharedPreferences = appSharedPreferences;
+        this.dataManager = dataManager;
         this.api = api;
         this.suppliesList = new LinkedList<>();
     }
@@ -50,7 +50,7 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
     @Override
     public void onBindViewHolder(final SupplyViewHolder holder, int position) {
         final Supply supply = suppliesList.get(position);
-        gov.peacecorps.medlinkandroid.data.models.Supply supplyModel = appSharedPreferences.getSupply(supply.getId());
+        gov.peacecorps.medlinkandroid.data.models.Supply supplyModel = dataManager.getSupply(supply.getId());
         holder.supplyNameTv.setText(supplyModel.getName());
         holder.markReceivedButton.setVisibility(View.GONE);
         holder.flagSupplyButton.setVisibility(View.GONE);
