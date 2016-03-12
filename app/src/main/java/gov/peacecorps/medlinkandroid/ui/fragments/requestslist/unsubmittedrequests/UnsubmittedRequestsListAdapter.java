@@ -1,7 +1,6 @@
 package gov.peacecorps.medlinkandroid.ui.fragments.requestslist.unsubmittedrequests;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,9 +24,7 @@ public class UnsubmittedRequestsListAdapter extends RequestsListAdapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_request, parent, false);
-
-        return new RequestViewHolder(view);
+        return super.onCreateViewHolder(parent, viewType);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class UnsubmittedRequestsListAdapter extends RequestsListAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return 0;
+        return super.getItemViewType(position);
     }
 
     public void updateUnsubmittedRequests(List<RequestListItem> requests) {

@@ -60,7 +60,8 @@
             style="@style/AppTheme.NoActionBar.TabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|fill_horizontal" />
+            android:layout_gravity="bottom|fill_horizontal"
+            android:background="@color/colorAccentDark" />
 
     </android.support.design.widget.AppBarLayout>
 

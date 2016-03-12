@@ -78,7 +78,8 @@
     <style name="AppTheme.NoActionBar.TabLayout" parent="Base.Widget.Design.TabLayout">
         <item name="tabMaxWidth">0dp</item>
         <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorColor">@color/colorPrimaryDark</item>
         <item name="tabIndicatorHeight">0dp</item>
         <item name="tabPaddingStart">0dp</item>
         <item name="tabPaddingEnd">0dp</item>

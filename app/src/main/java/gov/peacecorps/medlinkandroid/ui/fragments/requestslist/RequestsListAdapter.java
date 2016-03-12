@@ -2,10 +2,14 @@ package gov.peacecorps.medlinkandroid.ui.fragments.requestslist;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.helpers.Constants;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
@@ -16,6 +20,8 @@ import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests
 
 public abstract class RequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    protected final static int VIEW_TYPE_REQUEST = 2;
+
     protected final DataManager dataManager;
     protected final BaseActivity context;
     protected final List<RequestListItem> requestsList;
@@ -24,6 +30,20 @@ public abstract class RequestsListAdapter extends RecyclerView.Adapter<RecyclerV
         context = baseView.getBaseActivity();
         this.dataManager = dataManager;
         requestsList = new LinkedList<>();
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            default:
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_request, parent, false);
+                return new RequestViewHolder(view);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return VIEW_TYPE_REQUEST;
     }
 
     @Override

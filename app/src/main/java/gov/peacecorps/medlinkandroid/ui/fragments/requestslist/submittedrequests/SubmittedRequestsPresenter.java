@@ -1,5 +1,6 @@
 package gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import gov.peacecorps.medlinkandroid.R;
@@ -51,10 +52,12 @@ public class SubmittedRequestsPresenter {
 
     public void getSubmittedRequestsList() {
         Call<GetRequestsListResponse> getRequestsListResponseCall = api.getRequestsList();
+        final List<RequestListItem> requests = new LinkedList<>();
         final GlobalRestCallback.NetworkFailureCallback networkFailureCallback = new GlobalRestCallback.NetworkFailureCallback() {
             @Override
             public void onNetworkFailure() {
                 requestsListView.clearSwipeAnimation();
+                requestsListView.updateRequests(requests);
                 super.onNetworkFailure();
             }
         };
@@ -62,13 +65,14 @@ public class SubmittedRequestsPresenter {
         getRequestsListResponseCall.enqueue(new GlobalRestCallback<GetRequestsListResponse>(requestsListView.getBaseActivity(), networkFailureCallback) {
             @Override
             public void onResponse(Response<GetRequestsListResponse> response, Retrofit retrofit) {
-                requestsListView.getBaseActivity().dismissProgressDialog();
                 requestsListView.clearSwipeAnimation();
                 if (response.isSuccess()) {
-                    requestsListView.displayRequests(response.body().getRequests());
+                    requests.addAll(response.body().getRequests());
                 } else {
                     requestsListView.getBaseActivity().showInfoDialog(R.string.we_are_having_technical_issues);
                 }
+
+                requestsListView.updateRequests(requests);
             }
         });
     }

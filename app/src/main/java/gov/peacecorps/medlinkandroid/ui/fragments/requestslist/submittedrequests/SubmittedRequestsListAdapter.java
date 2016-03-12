@@ -21,7 +21,6 @@ import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
 public class SubmittedRequestsListAdapter extends RequestsListAdapter {
 
     private final static int VIEW_TYPE_SUB_SECTION_HEADER = 1;
-    private final static int VIEW_TYPE_REQUEST = 2;
 
     private List<RequestListItem> sortedRequests;
 
@@ -37,8 +36,7 @@ public class SubmittedRequestsListAdapter extends RequestsListAdapter {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_sub_section_header, parent, false);
                 return new SubSectionHeaderViewHolder(view);
             default:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_requests_list_request, parent, false);
-                return new RequestViewHolder(view);
+                return super.onCreateViewHolder(parent, viewType);
         }
     }
 
@@ -74,7 +72,7 @@ public class SubmittedRequestsListAdapter extends RequestsListAdapter {
             return VIEW_TYPE_SUB_SECTION_HEADER;
         }
 
-        return VIEW_TYPE_REQUEST;
+        return super.getItemViewType(position);
     }
 
     private RequestListItem createSubSectionHeader(String subSectionName) {

@@ -1,38 +1,22 @@
 package gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
-import gov.peacecorps.medlinkandroid.ui.fragments.BaseFragment;
-import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListFragment;
 
-public class SubmittedRequestsFragment extends BaseFragment implements RequestsListView {
+public class SubmittedRequestsFragment extends RequestsListFragment {
 
     @Inject
     SubmittedRequestsPresenter submittedRequestsPresenter;
 
     @Inject
     SubmittedRequestsListAdapter submittedRequestsListAdapter;
-
-    @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
-    @Bind(R.id.requestsListRv)
-    RecyclerView requestsListRv;
 
     @Override
     protected void setupFragmentComponent(AppComponent appComponent) {
@@ -45,48 +29,30 @@ public class SubmittedRequestsFragment extends BaseFragment implements RequestsL
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        submittedRequestsPresenter.getSupplies();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_submitted_or_unsubmitted_requests, container, false);
+    protected void initRequestListRecyclerView() {
+        requestsListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        requestsListRv.setAdapter(submittedRequestsListAdapter);
+    }
 
-        ButterKnife.bind(this, view);
-
-        initRequestListRecyclerView();
-
+    @Override
+    protected void initSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 submittedRequestsPresenter.getSupplies();
             }
         });
-
-        return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        submittedRequestsPresenter.getSupplies();
-    }
-
-    private void initRequestListRecyclerView() {
-        requestsListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        requestsListRv.setAdapter(submittedRequestsListAdapter);
-    }
-
-    @Override
-    public void displayRequests(List<RequestListItem> requests) {
+    public void updateRequests(List<RequestListItem> requests) {
+        super.updateRequests(requests);
         submittedRequestsListAdapter.updateSubmittedRequests(requests);
-    }
-
-    @Override
-    public void clearSwipeAnimation() {
-        swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -29,8 +29,7 @@ public class UnsubmittedRequestsPresenter {
             requestsList.add(DataConverter.convertSubmitNewRequestToRequestListItem(newRequest));
         }
 
-        requestsListView.getBaseActivity().dismissProgressDialog();
         requestsListView.clearSwipeAnimation();
-        requestsListView.displayRequests(requestsList);
+        requestsListView.updateRequests(requestsList);
     }
 }

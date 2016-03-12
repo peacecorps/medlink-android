@@ -9,14 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.adapters.requestslist.OrderPagerAdapter;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
-import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
 import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.ui.activities.createrequest.CreateRequestActivity;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests.SubmittedRequestsFragment;
@@ -98,10 +95,13 @@ public class RequestsListActivity extends BaseActivity {
     }
 
     private void addUnsubmittedRequestsFragment(OrderPagerAdapter orderPagerAdapter) {
-        List<SubmitNewRequest> unsubmittedRequests = dataManager.getUnsubmittedRequests();
-        if (!unsubmittedRequests.isEmpty()) {
+        if (areThereUnsubmittedRequests()) {
             orderPagerAdapter.addFragment(new UnsubmittedRequestsFragment(), getString(R.string.section_header_unsubmitted_orders));
         }
+    }
+
+    private boolean areThereUnsubmittedRequests() {
+        return !dataManager.getUnsubmittedRequests().isEmpty();
     }
 
     private void goToCreateRequestsActivity() {
