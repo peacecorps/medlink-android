@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
 import gov.peacecorps.medlinkandroid.rest.service.API;
 import retrofit.JacksonConverterFactory;
@@ -34,8 +34,8 @@ public class RestModule {
 
     @Provides
     @Singleton
-    HmacInterceptor provideHmacInterceptor(HmacSigner hmacSigner, AppSharedPreferences appSharedPreferences){
-        return new HmacInterceptor(hmacSigner, appSharedPreferences);
+    HmacInterceptor provideHmacInterceptor(HmacSigner hmacSigner, DataManager dataManager){
+        return new HmacInterceptor(hmacSigner, dataManager);
     }
 
     @Provides

@@ -16,6 +16,7 @@ import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.activities.requestslist.RequestsListActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
+import gov.peacecorps.medlinkandroid.helpers.Constants;
 import gov.peacecorps.medlinkandroid.helpers.Validator;
 
 public class LoginActivity extends BaseActivity implements LoginView {
@@ -46,7 +47,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(sharedPreferences.hasUser()){
+        if (dataManager.hasUser()) {
             goToRequestsListActivity();
             return;
         }
@@ -64,8 +65,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @OnTextChanged({R.id.emailEt, R.id.passwordEt})
-    public void onTextChanged(){
-        if(isEmailValid() && isPasswordValid()) {
+    public void onTextChanged() {
+        if (isEmailValid() && isPasswordValid()) {
             submitBtn.setEnabled(true);
         } else {
             submitBtn.setEnabled(false);
@@ -76,13 +77,13 @@ public class LoginActivity extends BaseActivity implements LoginView {
         return Validator.isEmailValid(emailEt.getText().toString());
     }
 
-    //TODO: are there any restrictions on password length or characters that can be used?
     private boolean isPasswordValid() {
-        return !TextUtils.isEmpty(passwordEt.getText().toString());
+        String password = passwordEt.getText().toString();
+        return !TextUtils.isEmpty(password) && password.length() >= Constants.MIN_PASSWORD_LENGTH;
     }
 
     @OnClick(R.id.submitBtn)
-    public void onSubmitBtnClick(){
+    public void onSubmitBtnClick() {
         loginPresenter.loginUser(emailEt.getText().toString(), passwordEt.getText().toString());
     }
 }

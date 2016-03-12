@@ -1,8 +1,10 @@
 package gov.peacecorps.medlinkandroid.activities.requestslist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,9 +18,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
+import gov.peacecorps.medlinkandroid.activities.createrequest.CreateRequestActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
-import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
 
 public class RequestsListActivity extends BaseActivity implements RequestsListView {
 
@@ -42,6 +44,9 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
 
     @Bind(R.id.orderHistoryFab)
     FloatingActionButton orderHistoryFab;
+
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -74,10 +79,21 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
         newOrderFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: open activity to make a new request
-                Snackbar.make(view, R.string.not_yet_implemented, Snackbar.LENGTH_SHORT).show();
+                goToCreateRequestsActivity();
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestsListPresenter.getSupplies();
+            }
+        });
+    }
+
+    private void goToCreateRequestsActivity() {
+        Intent intent = new Intent(this, CreateRequestActivity.class);
+        startActivity(intent);
     }
 
     private void initRequestListRecyclerView() {
@@ -88,11 +104,21 @@ public class RequestsListActivity extends BaseActivity implements RequestsListVi
     @Override
     protected void onResume() {
         super.onResume();
-        requestsListPresenter.getRequestsList();
+        requestsListPresenter.getSupplies();
     }
 
     @Override
-    public void displayRequests(List<Request> requests) {
-        requestsListAdapter.updateRequests(requests);
+    public void displaySubmittedRequests(List<RequestListItem> requests) {
+        requestsListAdapter.updateSubmittedRequests(requests);
+    }
+
+    @Override
+    public void displayUnsubmittedRequests() {
+        requestsListAdapter.updateUnsubmittedRequests();
+    }
+
+    @Override
+    public void clearSwipeAnimation() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

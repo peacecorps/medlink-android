@@ -10,6 +10,4 @@
         style="@style/AppTheme.NoActionBar.TextSectionHeader"
         tools:text="Section Header" />
 
-    <View style="@style/Divider" />
-
 </LinearLayout>

@@ -1,5 +1,6 @@
 package gov.peacecorps.medlinkandroid.data.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Supply {
@@ -22,6 +23,11 @@ public class Supply {
 
     public String getName() {
         return name;
+    }
+
+    @JsonIgnore
+    public String getNameAndShortCode() {
+        return String.format("%s (%s)", name, shortCode);
     }
 
     public void setName(String name) {

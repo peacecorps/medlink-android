@@ -1,8 +1,9 @@
 package gov.peacecorps.medlinkandroid.rest.service;
 
-import gov.peacecorps.medlinkandroid.rest.models.request.login.LoginRequest;
+import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.GetRequestsListResponse;
-import gov.peacecorps.medlinkandroid.rest.models.response.BaseResponse;
+import gov.peacecorps.medlinkandroid.rest.models.request.login.LoginRequest;
+import gov.peacecorps.medlinkandroid.rest.models.response.createrequest.SubmitNewRequestResponse;
 import gov.peacecorps.medlinkandroid.rest.models.response.getsupplies.GetSuppliesResponse;
 import gov.peacecorps.medlinkandroid.rest.models.response.login.LoginResponse;
 import retrofit.Call;
@@ -21,6 +22,12 @@ public interface API {
     @GET("requests")
     Call<GetRequestsListResponse> getRequestsList();
 
-    @POST("/responses/{supply_id}/mark_received")
-    Call<BaseResponse> markSupplyAsReceived(@Path("supply_id") Integer supplyId);
+    @POST("requests")
+    Call<SubmitNewRequestResponse> submitNewRequest(@Body SubmitNewRequest submitNewRequest);
+
+    @POST("responses/{supply_response_id}/mark_received")
+    Call<Void> markSupplyAsReceived(@Path("supply_response_id") Integer supplyResponseId);
+
+    @POST("responses/{supply_response_id}/flag")
+    Call<Void> flagSupply(@Path("supply_response_id") Integer supplyResponseId);
 }

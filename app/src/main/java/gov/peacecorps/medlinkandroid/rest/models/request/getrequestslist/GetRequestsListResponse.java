@@ -4,15 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+import gov.peacecorps.medlinkandroid.activities.requestslist.RequestListItem;
+
 public class GetRequestsListResponse {
     @JsonProperty("requests")
-    private List<Request> requests;
+    private List<RequestListItem> requests;
 
-    public List<Request> getRequests() {
+    public List<RequestListItem> getRequests() {
         return requests;
     }
 
-    public void setRequests(List<Request> requests) {
+    public void setRequests(List<RequestListItem> requests) {
         this.requests = requests;
     }
 }

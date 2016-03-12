@@ -17,11 +17,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.activities.BaseActivity;
-import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.UiUtils;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
-import gov.peacecorps.medlinkandroid.rest.models.response.BaseResponse;
 import gov.peacecorps.medlinkandroid.rest.service.API;
 import retrofit.Call;
 import retrofit.Response;
@@ -31,12 +30,12 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
 
     private final RequestDetailView requestDetailView;
     private final List<Supply> suppliesList;
-    private final AppSharedPreferences appSharedPreferences;
+    private final DataManager dataManager;
     private final API api;
 
-    public SupplyListAdapter(RequestDetailView requestDetailView, AppSharedPreferences appSharedPreferences, API api) {
+    public SupplyListAdapter(RequestDetailView requestDetailView, DataManager dataManager, API api) {
         this.requestDetailView = requestDetailView;
-        this.appSharedPreferences = appSharedPreferences;
+        this.dataManager = dataManager;
         this.api = api;
         this.suppliesList = new LinkedList<>();
     }
@@ -51,9 +50,10 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
     @Override
     public void onBindViewHolder(final SupplyViewHolder holder, int position) {
         final Supply supply = suppliesList.get(position);
-        gov.peacecorps.medlinkandroid.data.models.Supply supplyModel = appSharedPreferences.getSupply(supply.getId());
+        gov.peacecorps.medlinkandroid.data.models.Supply supplyModel = dataManager.getSupply(supply.getId());
         holder.supplyNameTv.setText(supplyModel.getName());
-        holder.supplyActionBtn.setVisibility(View.GONE);
+        holder.markReceivedButton.setVisibility(View.GONE);
+        holder.flagSupplyButton.setVisibility(View.GONE);
 
         final Context context = requestDetailView.getBaseActivity();
         String supplyStatus;
@@ -63,8 +63,9 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
             switch (supply.getResponse().getType()) {
                 case DELIVERY:
                     supplyStatus = context.getString(R.string.approved_for_delivery);
-                    holder.supplyActionBtn.setVisibility(View.VISIBLE);
-                    holder.supplyActionBtn.setOnClickListener(new View.OnClickListener() {
+                    holder.markReceivedButton.setVisibility(View.VISIBLE);
+                    holder.flagSupplyButton.setVisibility(View.VISIBLE);
+                    holder.markReceivedButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             UiUtils.showAlertDialog(context,
@@ -80,17 +81,17 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
                                     });
                         }
 
-
                         private void markSupplyAsReceived(Supply supply) {
-                            Call<BaseResponse> baseResponseCall = api.markSupplyAsReceived(supply.getId());
+                            Call<Void> baseResponseCall = api.markSupplyAsReceived(supply.getResponse().getId());
                             final BaseActivity baseActivity = requestDetailView.getBaseActivity();
                             baseActivity.showProgressDialog(R.string.marking_supply_as_received);
-                            baseResponseCall.enqueue(new GlobalRestCallback<BaseResponse>(baseActivity) {
+                            baseResponseCall.enqueue(new GlobalRestCallback<Void>(baseActivity) {
                                 @Override
-                                public void onResponse(Response<BaseResponse> response, Retrofit retrofit) {
+                                public void onResponse(Response<Void> response, Retrofit retrofit) {
                                     baseActivity.dismissProgressDialog();
-                                    if(response.isSuccess()) {
-                                        holder.supplyActionBtn.setEnabled(false);
+                                    if (response.isSuccess()) {
+                                        baseActivity.showInfoDialog(R.string.supply_marked_as_received);
+                                        disableSupplyActionButtons(holder);
                                     } else {
                                         baseActivity.showInfoDialog(R.string.we_are_having_technical_issues);
                                     }
@@ -98,6 +99,42 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
                             });
                         }
                     });
+
+                    holder.flagSupplyButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            UiUtils.showAlertDialog(context,
+                                    R.string.are_you_sure_not_received,
+                                    R.string.yes,
+                                    R.string.no,
+                                    new MaterialDialog.ButtonCallback() {
+                                        @Override
+                                        public void onPositive(MaterialDialog dialog) {
+                                            super.onPositive(dialog);
+                                            flagSupply(supply);
+                                        }
+                                    });
+                        }
+
+                        private void flagSupply (Supply supply) {
+                            Call<Void> baseResponseCall = api.flagSupply(supply.getResponse().getId());
+                            final BaseActivity baseActivity = requestDetailView.getBaseActivity();
+                            baseActivity.showProgressDialog(R.string.flagging_supply_for_pcmo);
+                            baseResponseCall.enqueue(new GlobalRestCallback<Void>(baseActivity) {
+                                @Override
+                                public void onResponse(Response<Void> response, Retrofit retrofit) {
+                                    baseActivity.dismissProgressDialog();
+                                    if (response.isSuccess()) {
+                                        baseActivity.showInfoDialog(R.string.supply_flagged_for_pcmo);
+                                        disableSupplyActionButtons(holder);
+                                    } else {
+                                        baseActivity.showInfoDialog(R.string.we_are_having_technical_issues);
+                                    }
+                                }
+                            });
+                        }
+                    });
+
                     break;
                 case DENIAL:
                     supplyStatus = context.getString(R.string.denied_by_pcmo);
@@ -113,6 +150,11 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
         holder.supplyStatusTv.setText(supplyStatus);
     }
 
+    private void disableSupplyActionButtons(SupplyViewHolder holder) {
+        holder.markReceivedButton.setEnabled(false);
+        holder.flagSupplyButton.setEnabled(false);
+    }
+
     @Override
     public int getItemCount() {
         return suppliesList.size();
@@ -125,8 +167,11 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
     }
 
     public static class SupplyViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.supplyActionBtn)
-        ImageButton supplyActionBtn;
+        @Bind(R.id.flagSupplyBtn)
+        ImageButton flagSupplyButton;
+
+        @Bind(R.id.markReceivedBtn)
+        ImageButton markReceivedButton;
 
         @Bind(R.id.supplyNameTv)
         TextView supplyNameTv;

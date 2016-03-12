@@ -22,9 +22,6 @@ import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
 public class RequestDetailActivity extends BaseActivity implements RequestDetailView {
 
     @Inject
-    RequestDetailPresenter requestDetailPresenter;
-
-    @Inject
     SupplyListAdapter supplyListAdapter;
 
     @Bind(R.id.orderDateTv)
@@ -51,7 +48,7 @@ public class RequestDetailActivity extends BaseActivity implements RequestDetail
         ButterKnife.bind(this);
 
         RequestListItem requestListItem = (RequestListItem) getIntent().getSerializableExtra(Constants.EXTRA_REQUEST_LIST_ITEM);
-        orderDateTv.setText(DateUtils.getDisplayStringFromDate(requestListItem.getCreatedAt()));
+        orderDateTv.setText(DateUtils.getDisplayStringFromDate(requestListItem.getCreatedAt(), this));
 
         initSupplyListRecyclerView(requestListItem.getSupplies());
     }

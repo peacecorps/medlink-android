@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import gov.peacecorps.medlinkandroid.helpers.AppSharedPreferences;
+import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.HmacSigner;
 
 @Module
@@ -32,7 +33,13 @@ public class AppModule {
 
     @Provides
     @Singleton
-    HmacSigner provideHmacSigner(AppSharedPreferences appSharedPreferences){
-        return new HmacSigner(appSharedPreferences);
+    HmacSigner provideHmacSigner(DataManager dataManager){
+        return new HmacSigner(dataManager);
+    }
+
+    @Provides
+    @Singleton
+    DataManager provideDataManager(AppSharedPreferences appSharedPreferences){
+        return new DataManager(appSharedPreferences);
     }
 }
