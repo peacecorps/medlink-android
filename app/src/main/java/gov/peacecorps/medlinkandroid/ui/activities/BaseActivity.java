@@ -14,6 +14,7 @@ import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.application.App;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
+import gov.peacecorps.medlinkandroid.helpers.UiUtils;
 import gov.peacecorps.medlinkandroid.ui.activities.login.LoginActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
@@ -95,13 +96,27 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            dataManager.deleteUser();
-            goToLoginScreen();
+            confirmLogout();
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void confirmLogout() {
+        UiUtils.showAlertDialog(this,
+                R.string.are_you_sure_want_to_log_out,
+                R.string.yes,
+                R.string.no,
+                new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                        dataManager.deleteUser();
+                        goToLoginScreen();
+                    }
+                });
     }
 
     private void goToLoginScreen() {
