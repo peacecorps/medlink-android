@@ -5,24 +5,25 @@ import dagger.Provides;
 import gov.peacecorps.medlinkandroid.di.annotation.ActivityScope;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.rest.service.API;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
 
 @Module
 public class SubmittedRequestsModule {
-    private SubmittedRequestsView submittedRequestsView;
+    private RequestsListView requestsListView;
 
-    public SubmittedRequestsModule(SubmittedRequestsView submittedRequestsView) {
-        this.submittedRequestsView = submittedRequestsView;
+    public SubmittedRequestsModule(RequestsListView requestsListView) {
+        this.requestsListView = requestsListView;
     }
 
     @Provides
     @ActivityScope
     SubmittedRequestsPresenter providePresenter(API api, DataManager dataManager){
-        return new SubmittedRequestsPresenter(submittedRequestsView, api, dataManager);
+        return new SubmittedRequestsPresenter(requestsListView, api, dataManager);
     }
 
     @Provides
     @ActivityScope
     SubmittedRequestsListAdapter provideRequestsListAdapter(DataManager dataManager){
-        return new SubmittedRequestsListAdapter(submittedRequestsView, dataManager);
+        return new SubmittedRequestsListAdapter(requestsListView, dataManager);
     }
 }

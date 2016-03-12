@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/divider1"
-        style="@style/Divider"
+        style="@style/AppTheme.NoActionBar.Divider"
         android:layout_below="@id/selectSuppliesSectionHeaderTv" />
 
     <view
@@ -39,7 +39,7 @@
 
     <View
         android:id="@id/divider2"
-        style="@style/Divider"
+        style="@style/AppTheme.NoActionBar.Divider"
         android:layout_above="@+id/specialInstructionsEt" />
 
     <EditText

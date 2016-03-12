@@ -15,7 +15,7 @@
         style="@style/AppTheme.NoActionBar.TextSubSectionHeader"
         tools:text="27 Feb 2016, 08:06:23 PM" />
 
-    <View style="@style/Divider" />
+    <View style="@style/AppTheme.NoActionBar.Divider" />
 
     <view
         android:id="@+id/suppliesListRv"

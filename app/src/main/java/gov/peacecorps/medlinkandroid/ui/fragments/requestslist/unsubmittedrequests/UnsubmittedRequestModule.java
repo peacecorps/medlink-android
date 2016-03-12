@@ -4,18 +4,25 @@ import dagger.Module;
 import dagger.Provides;
 import gov.peacecorps.medlinkandroid.di.annotation.ActivityScope;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
 
 @Module
 public class UnsubmittedRequestModule {
-    private UnsubmittedRequestsView unsubmittedRequestsView;
+    private RequestsListView requestsListView;
 
-    public UnsubmittedRequestModule(UnsubmittedRequestsView unsubmittedRequestsView) {
-        this.unsubmittedRequestsView = unsubmittedRequestsView;
+    public UnsubmittedRequestModule(RequestsListView requestsListView) {
+        this.requestsListView = requestsListView;
+    }
+
+    @Provides
+    @ActivityScope
+    UnsubmittedRequestsPresenter provideUnsubmittedRequestsPresenter(DataManager dataManager){
+        return new UnsubmittedRequestsPresenter(requestsListView, dataManager);
     }
 
     @Provides
     @ActivityScope
     UnsubmittedRequestsListAdapter provideRequestsListAdapter(DataManager dataManager){
-        return new UnsubmittedRequestsListAdapter(unsubmittedRequestsView, dataManager);
+        return new UnsubmittedRequestsListAdapter(requestsListView, dataManager);
     }
 }

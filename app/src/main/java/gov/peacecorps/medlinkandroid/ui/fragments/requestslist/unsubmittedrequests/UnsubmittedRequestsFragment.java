@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -16,8 +18,13 @@ import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.ui.fragments.BaseFragment;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests.RequestListItem;
 
-public class UnsubmittedRequestsFragment extends BaseFragment implements UnsubmittedRequestsView {
+public class UnsubmittedRequestsFragment extends BaseFragment implements RequestsListView {
+
+    @Inject
+    UnsubmittedRequestsPresenter unsubmittedRequestsPresenter;
 
     @Inject
     UnsubmittedRequestsListAdapter unsubmittedRequestsListAdapter;
@@ -56,7 +63,7 @@ public class UnsubmittedRequestsFragment extends BaseFragment implements Unsubmi
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                unsubmittedRequestsListAdapter.updateUnsubmittedRequests();
+                unsubmittedRequestsPresenter.getUnsubmittedRequests();
             }
         });
 
@@ -66,12 +73,17 @@ public class UnsubmittedRequestsFragment extends BaseFragment implements Unsubmi
     @Override
     public void onResume() {
         super.onResume();
-        unsubmittedRequestsListAdapter.updateUnsubmittedRequests();
+        unsubmittedRequestsPresenter.getUnsubmittedRequests();
     }
 
     private void initRequestListRecyclerView() {
         requestsListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         requestsListRv.setAdapter(unsubmittedRequestsListAdapter);
+    }
+
+    @Override
+    public void displayRequests(List<RequestListItem> requests) {
+        unsubmittedRequestsListAdapter.updateUnsubmittedRequests(requests);
     }
 
     @Override

@@ -18,8 +18,9 @@ import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.ui.fragments.BaseFragment;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
 
-public class SubmittedRequestsFragment extends BaseFragment implements SubmittedRequestsView {
+public class SubmittedRequestsFragment extends BaseFragment implements RequestsListView {
 
     @Inject
     SubmittedRequestsPresenter submittedRequestsPresenter;
@@ -80,7 +81,7 @@ public class SubmittedRequestsFragment extends BaseFragment implements Submitted
     }
 
     @Override
-    public void displaySubmittedRequests(List<RequestListItem> requests) {
+    public void displayRequests(List<RequestListItem> requests) {
         submittedRequestsListAdapter.updateSubmittedRequests(requests);
     }
 

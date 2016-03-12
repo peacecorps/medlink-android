@@ -1,36 +1,26 @@
 package gov.peacecorps.medlinkandroid.ui.fragments.requestslist.unsubmittedrequests;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.helpers.Constants;
-import gov.peacecorps.medlinkandroid.helpers.DataConverter;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
-import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
-import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
-import gov.peacecorps.medlinkandroid.ui.activities.requestdetail.RequestDetailActivity;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestViewHolder;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListAdapter;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests.RequestListItem;
 
-public class UnsubmittedRequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class UnsubmittedRequestsListAdapter extends RequestsListAdapter {
 
-    private final List<RequestListItem> requestsList;
+    private RequestsListView requestsListView;
 
-    private final DataManager dataManager;
-    private UnsubmittedRequestsView unsubmittedRequestsView;
-
-    public UnsubmittedRequestsListAdapter(UnsubmittedRequestsView unsubmittedRequestsView, DataManager dataManager) {
-        this.unsubmittedRequestsView = unsubmittedRequestsView;
-        this.dataManager = dataManager;
-        requestsList = new LinkedList<>();
+    public UnsubmittedRequestsListAdapter(RequestsListView requestsListView, DataManager dataManager) {
+        super(requestsListView, dataManager);
+        this.requestsListView = requestsListView;
     }
 
     @Override
@@ -44,7 +34,7 @@ public class UnsubmittedRequestsListAdapter extends RecyclerView.Adapter<Recycle
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final RequestListItem requestListItem = requestsList.get(position);
         RequestViewHolder requestViewHolder = (RequestViewHolder) holder;
-        requestViewHolder.orderDateTv.setText(unsubmittedRequestsView.getBaseActivity().getString(R.string.not_submitted));
+        requestViewHolder.orderDateTv.setText(requestsListView.getBaseActivity().getString(R.string.not_submitted));
         requestViewHolder.suppliesSnippetTv.setText(getSuppliesNamesSnippet(requestListItem));
         requestViewHolder.rowLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,62 +44,13 @@ public class UnsubmittedRequestsListAdapter extends RecyclerView.Adapter<Recycle
         });
     }
 
-    private void goToRequestDetailActivity(RequestListItem requestListItem) {
-        Intent intent = new Intent(unsubmittedRequestsView.getBaseActivity(), RequestDetailActivity.class);
-        intent.putExtra(Constants.EXTRA_REQUEST_LIST_ITEM, requestListItem);
-
-        unsubmittedRequestsView.getBaseActivity().startActivity(intent);
-    }
-
-    private String getSuppliesNamesSnippet(RequestListItem requestListItem) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (Supply supply : requestListItem.getSupplies()) {
-            stringBuilder.append(dataManager.getSupply(supply.getId()).getName());
-            stringBuilder.append(", ");
-        }
-
-        String result = stringBuilder.toString();
-        if (result.isEmpty())
-            return result;
-        else
-            return trimTrailingComma(result);
-    }
-
-    @NonNull
-    private String trimTrailingComma(String result) {
-        return result.substring(0, result.length() - 2);
-    }
-
-    @Override
-    public int getItemCount() {
-        return requestsList.size();
-    }
-
     @Override
     public int getItemViewType(int position) {
         return 0;
     }
 
-    public void updateUnsubmittedRequests() {
-        getUnsubmittedRequests();
-        refreshRequestsList();
+    public void updateUnsubmittedRequests(List<RequestListItem> requests) {
+        refreshRequestsList(requests);
     }
 
-    private void getUnsubmittedRequests() {
-        unsubmittedRequestsView.getBaseActivity().showProgressDialog(R.string.fetching_requests);
-        requestsList.clear();
-
-        List<SubmitNewRequest> unsubmittedRequestsFromSharedPrefs = dataManager.getUnsubmittedRequests();
-
-        for (SubmitNewRequest newRequest : unsubmittedRequestsFromSharedPrefs) {
-            requestsList.add(DataConverter.convertSubmitNewRequestToRequestListItem(newRequest));
-        }
-    }
-
-    private void refreshRequestsList() {
-        unsubmittedRequestsView.getBaseActivity().dismissProgressDialog();
-        unsubmittedRequestsView.clearSwipeAnimation();
-        notifyDataSetChanged();
-    }
 }

@@ -31,7 +31,7 @@
     <string name="yes">Yes</string>
     <string name="marking_supply_as_received">Marking supply as received…</string>
     <string name="header_backdrop">Header backdrop</string>
-    <string name="peacecorps_medlink">Peacecorps Medlink</string>
+    <string name="medlink">Medlink</string>
     <string name="not_yet_implemented">Not yet implemented</string>
     <string name="title_activity_create_request">New Order</string>
     <string name="special_instructions">Special Instructions</string>

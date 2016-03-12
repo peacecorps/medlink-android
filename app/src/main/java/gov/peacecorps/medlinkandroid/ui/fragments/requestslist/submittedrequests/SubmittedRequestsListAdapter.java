@@ -1,8 +1,5 @@
 package gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,31 +12,22 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.helpers.Constants;
 import gov.peacecorps.medlinkandroid.helpers.DataConverter;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
-import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
-import gov.peacecorps.medlinkandroid.ui.activities.requestdetail.RequestDetailActivity;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestViewHolder;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListAdapter;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
 
-public class SubmittedRequestsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private final Context context;
-    private final List<RequestListItem> requestsList;
+public class SubmittedRequestsListAdapter extends RequestsListAdapter {
 
     private final static int VIEW_TYPE_SUB_SECTION_HEADER = 1;
     private final static int VIEW_TYPE_REQUEST = 2;
 
-    private final DataManager dataManager;
     private List<RequestListItem> sortedRequests;
-    private List<RequestListItem> unsubmittedRequests;
 
-    public SubmittedRequestsListAdapter(SubmittedRequestsView requestsListView, DataManager dataManager) {
-        this.context = requestsListView.getBaseActivity();
-        this.dataManager = dataManager;
-        requestsList = new LinkedList<>();
+    public SubmittedRequestsListAdapter(RequestsListView requestsListView, DataManager dataManager) {
+        super(requestsListView, dataManager);
         sortedRequests = new LinkedList<>();
-        unsubmittedRequests = new LinkedList<>();
     }
 
     @Override
@@ -73,36 +61,9 @@ public class SubmittedRequestsListAdapter extends RecyclerView.Adapter<RecyclerV
         }
     }
 
-    private void goToRequestDetailActivity(RequestListItem requestListItem) {
-        Intent intent = new Intent(context, RequestDetailActivity.class);
-        intent.putExtra(Constants.EXTRA_REQUEST_LIST_ITEM, requestListItem);
-
-        context.startActivity(intent);
-    }
-
-    private String getSuppliesNamesSnippet(RequestListItem requestListItem) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (Supply supply : requestListItem.getSupplies()) {
-            stringBuilder.append(dataManager.getSupply(supply.getId()).getName());
-            stringBuilder.append(", ");
-        }
-
-        String result = stringBuilder.toString();
-        if (result.isEmpty())
-            return result;
-        else
-            return trimTrailingComma(result);
-    }
-
-    @NonNull
-    private String trimTrailingComma(String result) {
-        return result.substring(0, result.length() - 2);
-    }
-
-    @Override
-    public int getItemCount() {
-        return requestsList.size();
+    public void updateSubmittedRequests(List<RequestListItem> requests) {
+        sortSubmittedRequestsByStatusAndAddSectionHeaders(requests);
+        refreshRequestsList(requests);
     }
 
     @Override
@@ -122,11 +83,6 @@ public class SubmittedRequestsListAdapter extends RecyclerView.Adapter<RecyclerV
         requestListItem.setSubSectionHeaderName(subSectionName);
 
         return requestListItem;
-    }
-
-    public void updateSubmittedRequests(List<RequestListItem> requests) {
-        sortSubmittedRequestsByStatusAndAddSectionHeaders(requests);
-        refreshRequestsList();
     }
 
     private List<RequestListItem> sortSubmittedRequestsByStatusAndAddSectionHeaders(List<RequestListItem> requests) {
@@ -163,14 +119,6 @@ public class SubmittedRequestsListAdapter extends RecyclerView.Adapter<RecyclerV
         addSubSection(sortedRequests, deniedRequests, R.string.sub_section_header_denied);
 
         return sortedRequests;
-    }
-
-    private void refreshRequestsList() {
-        this.requestsList.clear();
-        this.requestsList.addAll(unsubmittedRequests);
-        this.requestsList.addAll(sortedRequests);
-
-        notifyDataSetChanged();
     }
 
     private void addSubSection(List<RequestListItem> sortedRequests, List<RequestListItem> subSectionRequests, int subSectionHeaderResId) {

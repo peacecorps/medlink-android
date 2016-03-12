@@ -25,7 +25,7 @@
         </activity>
         <activity
             android:name=".ui.activities.requestslist.RequestsListActivity"
-            android:label="@string/peacecorps_medlink" />
+            android:label="@string/medlink" />
         <activity
             android:name=".ui.activities.requestdetail.RequestDetailActivity"
             android:label="@string/order_details"

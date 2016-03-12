@@ -10,6 +10,6 @@
         style="@style/AppTheme.NoActionBar.TextSubSectionHeader"
         tools:text="Sub-section Header" />
 
-    <View style="@style/Divider" />
+    <View style="@style/AppTheme.NoActionBar.Divider" />
 
 </LinearLayout>
