@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-import gov.peacecorps.medlinkandroid.activities.requestslist.RequestListItem;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests.RequestListItem;
 
 public class GetRequestsListResponse {
     @JsonProperty("requests")

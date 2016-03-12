@@ -48,7 +48,6 @@ public class Request implements Serializable {
             if (supply.isPending()) {
                 return Status.AT_LEAST_ONE_PENDING;
             } else {
-
                 switch (supply.getResponse().getType()) {
                     case DELIVERY:
                         numApproved++;

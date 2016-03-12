@@ -31,7 +31,7 @@
     <string name="yes">Yes</string>
     <string name="marking_supply_as_received">Marking supply as received…</string>
     <string name="header_backdrop">Header backdrop</string>
-    <string name="actionable_orders">Actionable Orders</string>
+    <string name="peacecorps_medlink">Peacecorps Medlink</string>
     <string name="not_yet_implemented">Not yet implemented</string>
     <string name="title_activity_create_request">New Order</string>
     <string name="special_instructions">Special Instructions</string>
@@ -45,7 +45,7 @@
     <string name="are_you_sure_not_received">Are you sure you haven\'t received this supply?</string>
     <string name="your_order_has_been_saved">Your order has been saved to be submitted when there is a network connection</string>
     <string name="section_header_submitted_orders">Submitted Orders</string>
-    <string name="not_submitted">Not submitted</string>
+    <string name="not_submitted">Not Submitted</string>
     <string name="section_header_unsubmitted_orders">Unsubmitted Orders</string>
     <string name="send_order_by_sms">Would you like to create this order via SMS?</string>
 </resources>
