@@ -50,4 +50,6 @@
     <string name="send_order_by_sms">Would you like to create this order via SMS?</string>
     <string name="are_you_sure_want_to_log_out">Are you sure you want to log out? You will lose any unsubmitted requests.</string>
     <string name="no_orders_found">No orders found</string>
+    <string name="send_unsubmitted_requests">Send unsubmitted requests</string>
+    <string name="submitting_orders">Submitting orders…</string>
 </resources>

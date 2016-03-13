@@ -112,7 +112,7 @@ public class DataManager {
         return unsubmittedRequests;
     }
 
-    private void setUnsubmittedRequests(List<SubmitNewRequest> unsubmittedRequests) {
+    public void setUnsubmittedRequests(List<SubmitNewRequest> unsubmittedRequests) {
         setString(PreferenceKey.UNSUBMITTED_REQUESTS, unsubmittedRequests);
     }
 

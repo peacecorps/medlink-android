@@ -40,6 +40,7 @@ public abstract class RequestsListFragment extends BaseFragment implements Reque
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable

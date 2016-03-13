@@ -32,7 +32,10 @@ public class CreateRequestPresenter {
 
     public void submitNewRequest(Set<Integer> selectedSupplyIds, String specialInstructions) {
         baseActivity.showProgressDialog(R.string.submitting_new_order);
-        final SubmitNewRequest newRequestPayload = buildNewRequestPayload(selectedSupplyIds, specialInstructions);
+        submitNewRequest(buildNewRequestPayload(selectedSupplyIds, specialInstructions));
+    }
+
+    public void submitNewRequest(final SubmitNewRequest newRequestPayload) {
         final MaterialDialog.ButtonCallback finishActivityCallback = new MaterialDialog.ButtonCallback() {
             @Override
             public void onPositive(MaterialDialog dialog) {

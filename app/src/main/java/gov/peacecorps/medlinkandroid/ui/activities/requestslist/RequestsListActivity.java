@@ -12,14 +12,15 @@ import android.view.View;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.adapters.requestslist.OrderPagerAdapter;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.ui.activities.createrequest.CreateRequestActivity;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests.SubmittedRequestsFragment;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.unsubmittedrequests.UnsubmittedRequestsFragment;
 
-public class RequestsListActivity extends BaseActivity {
+public class RequestsListActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+
+    private static final String EXTRA_LAST_FOCUSED_TAB = "EXTRA_LAST_FOCUSED_TAB";
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -35,6 +36,8 @@ public class RequestsListActivity extends BaseActivity {
 
     @Bind(R.id.ordersViewPager)
     ViewPager ordersViewPager;
+
+    private int focusedTabPosition;
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
@@ -73,13 +76,30 @@ public class RequestsListActivity extends BaseActivity {
     }
 
     private void setupOrdersTabLayout() {
-        ordersTabLayout.setupWithViewPager(buildOrdersViewPager());
+        initOrdersViewPager();
+        ordersTabLayout.setupWithViewPager(ordersViewPager);
+        ordersViewPager.setCurrentItem(focusedTabPosition);
+        ordersViewPager.addOnPageChangeListener(this);
     }
 
-    private ViewPager buildOrdersViewPager() {
+    private void initOrdersViewPager() {
         ordersViewPager.setAdapter(buildOrderPagerAdapter());
+    }
 
-        return ordersViewPager;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(EXTRA_LAST_FOCUSED_TAB, focusedTabPosition);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        restoreLastFocusedTab(savedInstanceState);
+    }
+
+    private void restoreLastFocusedTab(Bundle savedInstanceState) {
+        focusedTabPosition = savedInstanceState.getInt(EXTRA_LAST_FOCUSED_TAB);
     }
 
     private OrderPagerAdapter buildOrderPagerAdapter() {
@@ -107,5 +127,20 @@ public class RequestsListActivity extends BaseActivity {
     private void goToCreateRequestsActivity() {
         Intent intent = new Intent(this, CreateRequestActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        focusedTabPosition = position;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

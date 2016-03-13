@@ -1,14 +1,15 @@
-package gov.peacecorps.medlinkandroid.adapters.requestslist;
+package gov.peacecorps.medlinkandroid.ui.activities.requestslist;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListFragment;
+
 public class OrderPagerAdapter extends FragmentPagerAdapter {
-    private final List<Fragment> mFragments = new LinkedList<>();
+    private final List<RequestsListFragment> mFragments = new LinkedList<>();
     private final List<String> mFragmentTitles = new LinkedList<>();
 
     public OrderPagerAdapter(FragmentManager fm) {
@@ -16,7 +17,7 @@ public class OrderPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public RequestsListFragment getItem(int position) {
         return mFragments.get(position);
     }
 
@@ -30,7 +31,7 @@ public class OrderPagerAdapter extends FragmentPagerAdapter {
         return mFragmentTitles.get(position);
     }
 
-    public void addFragment(Fragment fragment, String fragmentTitle){
+    public void addFragment(RequestsListFragment fragment, String fragmentTitle){
         mFragments.add(fragment);
         mFragmentTitles.add(fragmentTitle);
     }

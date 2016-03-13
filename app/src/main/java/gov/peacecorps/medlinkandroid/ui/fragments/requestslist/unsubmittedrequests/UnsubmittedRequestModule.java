@@ -4,6 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import gov.peacecorps.medlinkandroid.di.annotation.ActivityScope;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
+import gov.peacecorps.medlinkandroid.rest.service.API;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
 
 @Module
@@ -16,8 +17,8 @@ public class UnsubmittedRequestModule {
 
     @Provides
     @ActivityScope
-    UnsubmittedRequestsPresenter provideUnsubmittedRequestsPresenter(DataManager dataManager){
-        return new UnsubmittedRequestsPresenter(requestsListView, dataManager);
+    UnsubmittedRequestsPresenter provideUnsubmittedRequestsPresenter(API api, DataManager dataManager){
+        return new UnsubmittedRequestsPresenter(requestsListView, api, dataManager);
     }
 
     @Provides
