@@ -3,6 +3,8 @@ package gov.peacecorps.medlinkandroid.ui.activities.requestdetail;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,6 +28,9 @@ public class RequestDetailActivity extends BaseActivity implements RequestDetail
     @Bind(R.id.orderDateTv)
     TextView orderDateTv;
 
+    @Bind(R.id.specialInstructionsTv)
+    TextView specialInstructionsTv;
+
     @Bind(R.id.suppliesListRv)
     RecyclerView suppliesListRv;
 
@@ -47,7 +52,14 @@ public class RequestDetailActivity extends BaseActivity implements RequestDetail
         ButterKnife.bind(this);
 
         RequestListItem requestListItem = (RequestListItem) getIntent().getSerializableExtra(Constants.EXTRA_REQUEST_LIST_ITEM);
-        orderDateTv.setText(requestListItem.getDateString(this)); //DateUtils.getDisplayStringFromDate(requestListItem.getCreatedAt(), this));
+
+        orderDateTv.setText(requestListItem.getDateString(this));
+
+        String specialInstructions = requestListItem.getSpecialInstructions();
+        if(!TextUtils.isEmpty(specialInstructions)) {
+            specialInstructionsTv.setText(specialInstructions);
+            specialInstructionsTv.setVisibility(View.VISIBLE);
+        }
 
         initSupplyListRecyclerView(requestListItem.getSupplies());
     }

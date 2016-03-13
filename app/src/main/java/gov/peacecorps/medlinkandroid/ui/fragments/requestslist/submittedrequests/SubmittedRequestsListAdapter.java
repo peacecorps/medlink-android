@@ -22,11 +22,8 @@ public class SubmittedRequestsListAdapter extends RequestsListAdapter {
 
     private final static int VIEW_TYPE_SUB_SECTION_HEADER = 1;
 
-    private List<RequestListItem> sortedRequests;
-
     public SubmittedRequestsListAdapter(RequestsListView requestsListView, DataManager dataManager) {
         super(requestsListView, dataManager);
-        sortedRequests = new LinkedList<>();
     }
 
     @Override
@@ -60,8 +57,7 @@ public class SubmittedRequestsListAdapter extends RequestsListAdapter {
     }
 
     public void updateSubmittedRequests(List<RequestListItem> requests) {
-        sortSubmittedRequestsByStatusAndAddSectionHeaders(requests);
-        refreshRequestsList(requests);
+        refreshRequestsList(sortSubmittedRequestsByStatusAndAddSectionHeaders(requests));
     }
 
     @Override
@@ -106,7 +102,7 @@ public class SubmittedRequestsListAdapter extends RequestsListAdapter {
             }
         }
 
-        sortedRequests.clear();
+        List<RequestListItem> sortedRequests = new LinkedList<>();
         if (requests.isEmpty()) {
             return sortedRequests;
         }

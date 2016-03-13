@@ -77,6 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
         android:src="@drawable/ic_history_white_24dp"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_anchor="@+id/fabLayoutPlaceholder"
         app:layout_anchorGravity="top|center"
         app:layout_behavior=".ui.activities.requestslist.ScrollAwareFABBehavior" />
@@ -95,6 +96,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_18dp"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_behavior=".ui.activities.requestslist.ScrollAwareFABBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>

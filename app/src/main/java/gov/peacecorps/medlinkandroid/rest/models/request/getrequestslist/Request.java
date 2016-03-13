@@ -25,6 +25,9 @@ public class Request implements Serializable {
     @JsonProperty("supplies")
     private List<Supply> supplies;
 
+    @JsonProperty("text")
+    private String specialInstructions;
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -39,6 +42,14 @@ public class Request implements Serializable {
 
     public void setSupplies(List<Supply> supplies) {
         this.supplies = supplies;
+    }
+
+    public String getSpecialInstructions() {
+        return specialInstructions;
+    }
+
+    public void setSpecialInstructions(String specialInstructions) {
+        this.specialInstructions = specialInstructions;
     }
 
     public Status getStatus() {

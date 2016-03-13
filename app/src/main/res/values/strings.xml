@@ -52,4 +52,7 @@
     <string name="no_orders_found">No orders found</string>
     <string name="send_unsubmitted_requests">Send unsubmitted requests</string>
     <string name="submitting_orders">Submitting orders…</string>
+    <string name="user_response">You %1$s this item on %2$s</string>
+    <string name="received">received</string>
+    <string name="flagged">flagged</string>
 </resources>

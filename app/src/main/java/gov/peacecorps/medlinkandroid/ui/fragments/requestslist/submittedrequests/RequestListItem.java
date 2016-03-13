@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.helpers.Constants;
+import gov.peacecorps.medlinkandroid.helpers.DateUtils;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
 
 public final class RequestListItem extends Request implements Serializable {
@@ -35,6 +35,6 @@ public final class RequestListItem extends Request implements Serializable {
             return context.getString(R.string.not_submitted);
         }
 
-        return Constants.DISPLAY_SIMPLE_DATE_FORMAT.format(createdAt);
+        return DateUtils.getDisplayStringFromDate(createdAt, context);
     }
 }

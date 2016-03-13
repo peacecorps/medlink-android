@@ -17,6 +17,13 @@
 
     <View style="@style/AppTheme.NoActionBar.Divider" />
 
+    <TextView
+        android:id="@+id/specialInstructionsTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Some special instructions"
+        android:visibility="gone"/>
+
     <view
         android:id="@+id/suppliesListRv"
         class="android.support.v7.widget.RecyclerView"

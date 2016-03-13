@@ -16,12 +16,14 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
+import gov.peacecorps.medlinkandroid.helpers.DateUtils;
 import gov.peacecorps.medlinkandroid.helpers.UiUtils;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply;
+import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.SupplyUserResponseType;
 import gov.peacecorps.medlinkandroid.rest.service.API;
+import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -65,75 +67,83 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
                     supplyStatus = context.getString(R.string.approved_for_delivery);
                     holder.markReceivedButton.setVisibility(View.VISIBLE);
                     holder.flagSupplyButton.setVisibility(View.VISIBLE);
-                    holder.markReceivedButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            UiUtils.showAlertDialog(context,
-                                    R.string.are_you_sure_received,
-                                    R.string.yes,
-                                    R.string.no,
-                                    new MaterialDialog.ButtonCallback() {
-                                        @Override
-                                        public void onPositive(MaterialDialog dialog) {
-                                            super.onPositive(dialog);
-                                            markSupplyAsReceived(supply);
+
+                    SupplyUserResponseType userResponseStatus = supply.getUserResponseStatus();
+                    if (userResponseStatus == SupplyUserResponseType.RECEIVED || userResponseStatus == SupplyUserResponseType.FLAGGED) {
+                        disableSupplyActionButtons(holder);
+                        holder.userResponseStatusTv.setText(buildUserResponseString(context, supply));
+                        holder.userResponseStatusTv.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.markReceivedButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                UiUtils.showAlertDialog(context,
+                                        R.string.are_you_sure_received,
+                                        R.string.yes,
+                                        R.string.no,
+                                        new MaterialDialog.ButtonCallback() {
+                                            @Override
+                                            public void onPositive(MaterialDialog dialog) {
+                                                super.onPositive(dialog);
+                                                markSupplyAsReceived(supply);
+                                            }
+                                        });
+                            }
+
+                            private void markSupplyAsReceived(Supply supply) {
+                                Call<Void> baseResponseCall = api.markSupplyAsReceived(supply.getResponse().getId());
+                                final BaseActivity baseActivity = requestDetailView.getBaseActivity();
+                                baseActivity.showProgressDialog(R.string.marking_supply_as_received);
+                                baseResponseCall.enqueue(new GlobalRestCallback<Void>(baseActivity) {
+                                    @Override
+                                    public void onResponse(Response<Void> response, Retrofit retrofit) {
+                                        baseActivity.dismissProgressDialog();
+                                        if (response.isSuccess()) {
+                                            baseActivity.showInfoDialog(R.string.supply_marked_as_received);
+                                            disableSupplyActionButtons(holder);
+                                        } else {
+                                            baseActivity.showInfoDialog(R.string.we_are_having_technical_issues);
                                         }
-                                    });
-                        }
-
-                        private void markSupplyAsReceived(Supply supply) {
-                            Call<Void> baseResponseCall = api.markSupplyAsReceived(supply.getResponse().getId());
-                            final BaseActivity baseActivity = requestDetailView.getBaseActivity();
-                            baseActivity.showProgressDialog(R.string.marking_supply_as_received);
-                            baseResponseCall.enqueue(new GlobalRestCallback<Void>(baseActivity) {
-                                @Override
-                                public void onResponse(Response<Void> response, Retrofit retrofit) {
-                                    baseActivity.dismissProgressDialog();
-                                    if (response.isSuccess()) {
-                                        baseActivity.showInfoDialog(R.string.supply_marked_as_received);
-                                        disableSupplyActionButtons(holder);
-                                    } else {
-                                        baseActivity.showInfoDialog(R.string.we_are_having_technical_issues);
                                     }
-                                }
-                            });
-                        }
-                    });
+                                });
+                            }
+                        });
 
-                    holder.flagSupplyButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            UiUtils.showAlertDialog(context,
-                                    R.string.are_you_sure_not_received,
-                                    R.string.yes,
-                                    R.string.no,
-                                    new MaterialDialog.ButtonCallback() {
-                                        @Override
-                                        public void onPositive(MaterialDialog dialog) {
-                                            super.onPositive(dialog);
-                                            flagSupply(supply);
+                        holder.flagSupplyButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                UiUtils.showAlertDialog(context,
+                                        R.string.are_you_sure_not_received,
+                                        R.string.yes,
+                                        R.string.no,
+                                        new MaterialDialog.ButtonCallback() {
+                                            @Override
+                                            public void onPositive(MaterialDialog dialog) {
+                                                super.onPositive(dialog);
+                                                flagSupply(supply);
+                                            }
+                                        });
+                            }
+
+                            private void flagSupply(Supply supply) {
+                                Call<Void> baseResponseCall = api.flagSupply(supply.getResponse().getId());
+                                final BaseActivity baseActivity = requestDetailView.getBaseActivity();
+                                baseActivity.showProgressDialog(R.string.flagging_supply_for_pcmo);
+                                baseResponseCall.enqueue(new GlobalRestCallback<Void>(baseActivity) {
+                                    @Override
+                                    public void onResponse(Response<Void> response, Retrofit retrofit) {
+                                        baseActivity.dismissProgressDialog();
+                                        if (response.isSuccess()) {
+                                            baseActivity.showInfoDialog(R.string.supply_flagged_for_pcmo);
+                                            disableSupplyActionButtons(holder);
+                                        } else {
+                                            baseActivity.showInfoDialog(R.string.we_are_having_technical_issues);
                                         }
-                                    });
-                        }
-
-                        private void flagSupply (Supply supply) {
-                            Call<Void> baseResponseCall = api.flagSupply(supply.getResponse().getId());
-                            final BaseActivity baseActivity = requestDetailView.getBaseActivity();
-                            baseActivity.showProgressDialog(R.string.flagging_supply_for_pcmo);
-                            baseResponseCall.enqueue(new GlobalRestCallback<Void>(baseActivity) {
-                                @Override
-                                public void onResponse(Response<Void> response, Retrofit retrofit) {
-                                    baseActivity.dismissProgressDialog();
-                                    if (response.isSuccess()) {
-                                        baseActivity.showInfoDialog(R.string.supply_flagged_for_pcmo);
-                                        disableSupplyActionButtons(holder);
-                                    } else {
-                                        baseActivity.showInfoDialog(R.string.we_are_having_technical_issues);
                                     }
-                                }
-                            });
-                        }
-                    });
+                                });
+                            }
+                        });
+                    }
 
                     break;
                 case DENIAL:
@@ -148,6 +158,21 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
         }
 
         holder.supplyStatusTv.setText(supplyStatus);
+    }
+
+    private String buildUserResponseString(Context context, Supply supply) {
+        return context.getString(R.string.user_response,
+                getUserResponseFriendlyName(supply.getUserResponseStatus()),
+                DateUtils.getDisplayStringFromDate(supply.getUserResponseDate(), context));
+    }
+
+    private String getUserResponseFriendlyName(SupplyUserResponseType userResponseStatus) {
+        switch (userResponseStatus) {
+            case RECEIVED:
+                return requestDetailView.getBaseActivity().getString(R.string.received);
+            default:
+                return requestDetailView.getBaseActivity().getString(R.string.flagged);
+        }
     }
 
     private void disableSupplyActionButtons(SupplyViewHolder holder) {
@@ -178,6 +203,9 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
 
         @Bind(R.id.supplyStatusTv)
         TextView supplyStatusTv;
+
+        @Bind(R.id.userResponseStatusTv)
+        TextView userResponseStatusTv;
 
         public SupplyViewHolder(View itemView) {
             super(itemView);

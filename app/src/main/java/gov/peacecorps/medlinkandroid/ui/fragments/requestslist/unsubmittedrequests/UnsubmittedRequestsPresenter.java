@@ -44,17 +44,20 @@ public class UnsubmittedRequestsPresenter {
     }
 
     public void sendUnsubmittedRequests() {
-        requestsListView.getBaseActivity().showProgressDialog(R.string.submitting_orders);
-        sendFirstUnsubmittedRequest(dataManager.getUnsubmittedRequests());
-    }
-
-    private void sendFirstUnsubmittedRequest(final List<SubmitNewRequest> unsubmittedRequests) {
-        final BaseActivity baseActivity = requestsListView.getBaseActivity();
+        List<SubmitNewRequest> unsubmittedRequests = dataManager.getUnsubmittedRequests();
+        BaseActivity baseActivity = requestsListView.getBaseActivity();
         if (unsubmittedRequests.isEmpty()) {
             updateRequestsList(unsubmittedRequests);
             baseActivity.dismissProgressDialog();
             return;
         }
+
+        baseActivity.showProgressDialog(R.string.submitting_orders);
+        sendFirstUnsubmittedRequest(unsubmittedRequests);
+    }
+
+    private void sendFirstUnsubmittedRequest(final List<SubmitNewRequest> unsubmittedRequests) {
+        final BaseActivity baseActivity = requestsListView.getBaseActivity();
 
         Call<SubmitNewRequestResponse> submitNewRequestCall = api.submitNewRequest(unsubmittedRequests.remove(0));
         submitNewRequestCall.enqueue(new GlobalRestCallback<SubmitNewRequestResponse>(baseActivity) {
