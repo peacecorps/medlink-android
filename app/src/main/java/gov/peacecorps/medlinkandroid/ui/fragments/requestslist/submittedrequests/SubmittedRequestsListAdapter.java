@@ -88,16 +88,20 @@ public class SubmittedRequestsListAdapter extends RequestsListAdapter {
         for (RequestListItem request : requests) {
             switch (request.getStatus()) {
                 case ALL_APPROVED:
-                    approvedRequests.add(DataConverter.convertRequestToRequestListItem(request));
+                    if (request.isAtLeastOneSupplyPendingUserResponse()) {
+                        approvedRequests.add(DataConverter.convertRequestToRequestListItem(request));
+                    }
+                    break;
+                case PROCESSED:
+                    if (request.isAtLeastOneSupplyPendingUserResponse()) {
+                        processedRequests.add(DataConverter.convertRequestToRequestListItem(request));
+                    }
                     break;
                 case ALL_DENIED:
                     deniedRequests.add(DataConverter.convertRequestToRequestListItem(request));
                     break;
                 case AT_LEAST_ONE_PENDING:
                     pendingRequests.add(DataConverter.convertRequestToRequestListItem(request));
-                    break;
-                case PROCESSED:
-                    processedRequests.add(DataConverter.convertRequestToRequestListItem(request));
                     break;
             }
         }
@@ -115,7 +119,7 @@ public class SubmittedRequestsListAdapter extends RequestsListAdapter {
         return sortedRequests;
     }
 
-    private void addSubSection(List<RequestListItem> sortedRequests, List<RequestListItem> subSectionRequests, int subSectionHeaderResId) {
+    protected void addSubSection(List<RequestListItem> sortedRequests, List<RequestListItem> subSectionRequests, int subSectionHeaderResId) {
         if (!subSectionRequests.isEmpty()) {
             sortedRequests.add(createSubSectionHeader(context.getString(subSectionHeaderResId)));
             sortedRequests.addAll(subSectionRequests);

@@ -3,7 +3,6 @@ package gov.peacecorps.medlinkandroid.ui.activities.requestslist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +14,7 @@ import gov.peacecorps.medlinkandroid.R;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
 import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.ui.activities.createrequest.CreateRequestActivity;
+import gov.peacecorps.medlinkandroid.ui.activities.requestshistory.RequestsHistoryActivity;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests.SubmittedRequestsFragment;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.unsubmittedrequests.UnsubmittedRequestsFragment;
 
@@ -55,8 +55,7 @@ public class RequestsListActivity extends BaseActivity implements ViewPager.OnPa
         orderHistoryFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: open activity that shows order history
-                Snackbar.make(view, R.string.not_yet_implemented, Snackbar.LENGTH_SHORT).show();
+                goToRequestsHistoryActivity();
             }
         });
 
@@ -122,6 +121,11 @@ public class RequestsListActivity extends BaseActivity implements ViewPager.OnPa
 
     private boolean areThereUnsubmittedRequests() {
         return !dataManager.getUnsubmittedRequests().isEmpty();
+    }
+
+    private void goToRequestsHistoryActivity() {
+        Intent intent = new Intent(this, RequestsHistoryActivity.class);
+        startActivity(intent);
     }
 
     private void goToCreateRequestsActivity() {

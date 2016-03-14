@@ -40,6 +40,7 @@ public class DataConverter {
         requestListItem.setIsSubSectionHeader(false);
         requestListItem.setCreatedAt(request.getCreatedAt());
         requestListItem.setSupplies(request.getSupplies());
+        requestListItem.setSpecialInstructions(request.getSpecialInstructions());
 
         return requestListItem;
     }
@@ -49,6 +50,7 @@ public class DataConverter {
         requestListItem.setIsSubSectionHeader(false);
 
         requestListItem.setSupplies(buildSupplyList(newRequest));
+        requestListItem.setSpecialInstructions(newRequest.getSpecialInstructions());
 
         return requestListItem;
     }

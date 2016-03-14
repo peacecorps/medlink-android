@@ -19,8 +19,7 @@
 
     <TextView
         android:id="@+id/specialInstructionsTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AppTheme.NoActionBar.TextOrderSpecialInstructions"
         tools:text="Some special instructions"
         android:visibility="gone"/>
 

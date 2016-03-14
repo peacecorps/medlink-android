@@ -161,17 +161,12 @@ public class SupplyListAdapter extends RecyclerView.Adapter<SupplyListAdapter.Su
     }
 
     private String buildUserResponseString(Context context, Supply supply) {
-        return context.getString(R.string.user_response,
-                getUserResponseFriendlyName(supply.getUserResponseStatus()),
-                DateUtils.getDisplayStringFromDate(supply.getUserResponseDate(), context));
-    }
-
-    private String getUserResponseFriendlyName(SupplyUserResponseType userResponseStatus) {
-        switch (userResponseStatus) {
+        switch (supply.getUserResponseStatus()) {
             case RECEIVED:
-                return requestDetailView.getBaseActivity().getString(R.string.received);
+                return context.getString(R.string.user_response_received,
+                        DateUtils.getDisplayStringFromDate(supply.getUserResponseDate(), context));
             default:
-                return requestDetailView.getBaseActivity().getString(R.string.flagged);
+                return context.getString(R.string.user_response_flagged);
         }
     }
 

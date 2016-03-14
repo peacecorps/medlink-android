@@ -34,6 +34,10 @@
             android:name=".ui.activities.createrequest.CreateRequestActivity"
             android:label="@string/title_activity_create_request"
             android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".ui.activities.requestshistory.RequestsHistoryActivity"
+            android:label="@string/title_activity_request_history"
+            android:theme="@style/AppTheme.ActionBar" />
     </application>
 
 </manifest>

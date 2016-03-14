@@ -52,6 +52,21 @@ public class Request implements Serializable {
         this.specialInstructions = specialInstructions;
     }
 
+    public boolean isNoSupplyPendingUserResponse(){
+        return !isAtLeastOneSupplyPendingUserResponse();
+    }
+
+    public boolean isAtLeastOneSupplyPendingUserResponse() {
+        for (Supply supply : getSupplies()) {
+            SupplyUserResponseType userResponseStatus = supply.getUserResponseStatus();
+            if (userResponseStatus == SupplyUserResponseType.PENDING || userResponseStatus == SupplyUserResponseType.RESPONDED) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Status getStatus() {
         int numApproved = 0, numDenied = 0;
 
@@ -76,9 +91,9 @@ public class Request implements Serializable {
             }
         }
 
-        if(hasOnlyApprovedSupplies(numApproved, numDenied)){
+        if (hasOnlyApprovedSupplies(numApproved, numDenied)) {
             return Status.ALL_APPROVED;
-        } else if(hasOnlyDeniedSupplies(numApproved, numDenied)) {
+        } else if (hasOnlyDeniedSupplies(numApproved, numDenied)) {
             return Status.ALL_DENIED;
         }
 

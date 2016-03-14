@@ -6,6 +6,7 @@ import gov.peacecorps.medlinkandroid.di.annotation.ActivityScope;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.rest.service.API;
 import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.RequestsListView;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.requesthistory.RequestsHistoryListAdapter;
 
 @Module
 public class SubmittedRequestsModule {
@@ -15,6 +16,7 @@ public class SubmittedRequestsModule {
         this.requestsListView = requestsListView;
     }
 
+
     @Provides
     @ActivityScope
     SubmittedRequestsPresenter providePresenter(API api, DataManager dataManager){
@@ -23,7 +25,13 @@ public class SubmittedRequestsModule {
 
     @Provides
     @ActivityScope
-    SubmittedRequestsListAdapter provideRequestsListAdapter(DataManager dataManager){
+    SubmittedRequestsListAdapter provideSubmittedRequestsListAdapter(DataManager dataManager){
         return new SubmittedRequestsListAdapter(requestsListView, dataManager);
+    }
+
+    @Provides
+    @ActivityScope
+    RequestsHistoryListAdapter provideRequestsHistoryListAdapter(DataManager dataManager){
+        return new RequestsHistoryListAdapter(requestsListView, dataManager);
     }
 }
