@@ -13,5 +13,8 @@ public enum SupplyResponseType {
     PICKUP,
 
     @JsonProperty("Reimburse")
-    REIMBURSE
+    REIMBURSE,
+
+    @JsonProperty("duplicate")
+    DUPLICATE
 }
