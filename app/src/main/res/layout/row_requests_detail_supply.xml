@@ -1,60 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:layout_marginTop="@dimen/activity_vertical_margin">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/flagSupplyBtn"
-        style="@style/AppTheme.NoActionBar.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/flag_button"
-        android:contentDescription="@string/flag_supply"
-        android:src="@drawable/ic_close_white_24dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/markReceivedBtn"
-        style="@style/AppTheme.NoActionBar.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/flagSupplyBtn"
-        android:layout_toStartOf="@id/flagSupplyBtn"
-        android:background="@drawable/received_button"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:contentDescription="@string/mark_as_received"
-        android:src="@drawable/ic_check_white_24dp" />
+        <ImageButton
+            android:id="@+id/flagSupplyBtn"
+            style="@style/AppTheme.NoActionBar.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/flag_button"
+            android:contentDescription="@string/flag_supply"
+            android:src="@drawable/ic_close_white_24dp" />
+
+        <ImageButton
+            android:id="@+id/markReceivedBtn"
+            style="@style/AppTheme.NoActionBar.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/flagSupplyBtn"
+            android:layout_toStartOf="@id/flagSupplyBtn"
+            android:background="@drawable/received_button"
+            android:contentDescription="@string/mark_as_received"
+            android:src="@drawable/ic_check_white_24dp" />
+
+        <TextView
+            android:id="@+id/supplyNameTv"
+            style="@style/AppTheme.NoActionBar.TextOrderHeader"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/markReceivedBtn"
+            android:layout_toStartOf="@id/markReceivedBtn"
+            android:gravity="bottom"
+            tools:text="Supply Name" />
+
+        <TextView
+            android:id="@+id/supplyStatusTv"
+            style="@style/AppTheme.NoActionBar.TextOrderDetails"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/supplyNameTv"
+            android:layout_toLeftOf="@id/markReceivedBtn"
+            android:layout_toStartOf="@id/markReceivedBtn"
+            android:gravity="bottom"
+            tools:text="Supply Status" />
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/supplyNameTv"
-        style="@style/AppTheme.NoActionBar.TextOrderHeader"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/markReceivedBtn"
-        android:layout_toStartOf="@id/markReceivedBtn"
-        android:gravity="bottom"
-        tools:text="Supply Name" />
-
-    <TextView
-        android:id="@+id/supplyStatusTv"
+        android:id="@+id/userResponseStatusTv"
         style="@style/AppTheme.NoActionBar.TextOrderDetails"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/supplyNameTv"
-        android:layout_toLeftOf="@id/markReceivedBtn"
-        android:layout_toStartOf="@id/markReceivedBtn"
-        android:gravity="bottom"
-        tools:text="Supply Status" />
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:text="You received this on 27 Feb 2016, 08:06:26 PM" />
 
-</RelativeLayout>
+</LinearLayout>

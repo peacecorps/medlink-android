@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.requestdetail.RequestDetailActivity">
+    tools:context=".ui.activities.requestdetail.RequestDetailActivity">
 
     <TextView
         android:id="@+id/selectSuppliesSectionHeaderTv"
@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/divider1"
-        style="@style/Divider"
+        style="@style/AppTheme.NoActionBar.Divider"
         android:layout_below="@id/selectSuppliesSectionHeaderTv" />
 
     <view
@@ -39,7 +39,7 @@
 
     <View
         android:id="@id/divider2"
-        style="@style/Divider"
+        style="@style/AppTheme.NoActionBar.Divider"
         android:layout_above="@+id/specialInstructionsEt" />
 
     <EditText

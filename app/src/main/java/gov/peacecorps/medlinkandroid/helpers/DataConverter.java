@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import gov.peacecorps.medlinkandroid.activities.requestslist.RequestListItem;
 import gov.peacecorps.medlinkandroid.data.models.Supply;
 import gov.peacecorps.medlinkandroid.data.models.User;
 import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
 import gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Request;
 import gov.peacecorps.medlinkandroid.rest.models.response.getsupplies.GetSuppliesResponse;
 import gov.peacecorps.medlinkandroid.rest.models.response.login.LoginResponse;
+import gov.peacecorps.medlinkandroid.ui.fragments.requestslist.submittedrequests.RequestListItem;
 
 public class DataConverter {
     public static User convertLoginResponseToUser(LoginResponse loginResponse) {
@@ -38,9 +38,9 @@ public class DataConverter {
     public static RequestListItem convertRequestToRequestListItem(Request request){
         RequestListItem requestListItem = new RequestListItem();
         requestListItem.setIsSubSectionHeader(false);
-        requestListItem.setIsSectionHeader(false);
         requestListItem.setCreatedAt(request.getCreatedAt());
         requestListItem.setSupplies(request.getSupplies());
+        requestListItem.setSpecialInstructions(request.getSpecialInstructions());
 
         return requestListItem;
     }
@@ -48,14 +48,14 @@ public class DataConverter {
     public static RequestListItem convertSubmitNewRequestToRequestListItem(SubmitNewRequest newRequest) {
         RequestListItem requestListItem = new RequestListItem();
         requestListItem.setIsSubSectionHeader(false);
-        requestListItem.setIsSectionHeader(false);
 
         requestListItem.setSupplies(buildSupplyList(newRequest));
+        requestListItem.setSpecialInstructions(newRequest.getSpecialInstructions());
 
         return requestListItem;
     }
 
-    private static List<gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply> buildSupplyList(SubmitNewRequest newRequest) {
+    public static List<gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply> buildSupplyList(SubmitNewRequest newRequest) {
         List<gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist.Supply> suppliesList = new LinkedList<>();
         for(Integer supplyId: newRequest.getSupplyIds()){
             suppliesList.add(convertSupplyToSupply(supplyId));

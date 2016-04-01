@@ -8,14 +8,20 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.requestdetail.RequestDetailActivity">
+    tools:context=".ui.activities.requestdetail.RequestDetailActivity">
 
     <TextView
         android:id="@+id/orderDateTv"
         style="@style/AppTheme.NoActionBar.TextSubSectionHeader"
         tools:text="27 Feb 2016, 08:06:23 PM" />
 
-    <View style="@style/Divider" />
+    <View style="@style/AppTheme.NoActionBar.Divider" />
+
+    <TextView
+        android:id="@+id/specialInstructionsTv"
+        style="@style/AppTheme.NoActionBar.TextOrderSpecialInstructions"
+        tools:text="Some special instructions"
+        android:visibility="gone"/>
 
     <view
         android:id="@+id/suppliesListRv"

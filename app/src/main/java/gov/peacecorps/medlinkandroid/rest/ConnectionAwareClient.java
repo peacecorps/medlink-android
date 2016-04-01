@@ -1,11 +1,12 @@
 package gov.peacecorps.medlinkandroid.rest;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+
+import gov.peacecorps.medlinkandroid.helpers.NetworkManager;
 
 public class ConnectionAwareClient extends OkHttpClient {
 
@@ -19,15 +20,10 @@ public class ConnectionAwareClient extends OkHttpClient {
 
     @Override
     public Call newCall(Request request) {
-        if(isConnectionPresent()){
+        if (NetworkManager.isNetworkConnected(context)) {
             return client.newCall(request);
         } else {
             throw new NoNetworkException();
         }
-    }
-
-    private boolean isConnectionPresent() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 }

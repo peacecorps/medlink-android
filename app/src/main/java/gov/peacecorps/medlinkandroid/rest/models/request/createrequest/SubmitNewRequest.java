@@ -3,10 +3,11 @@ package gov.peacecorps.medlinkandroid.rest.models.request.createrequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class SubmitNewRequest {
+public class SubmitNewRequest implements Serializable {
     @JsonProperty("supply_ids")
     private Set<Integer> supplyIds;
 

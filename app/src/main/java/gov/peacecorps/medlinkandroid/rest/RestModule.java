@@ -21,7 +21,7 @@ import retrofit.Retrofit;
 @Module
 public class RestModule {
 
-    private static final long TIMEOUT = 5;
+    private static final long TIMEOUT_IN_SECONDS = 15;
 
     @Provides
     @Singleton
@@ -42,8 +42,8 @@ public class RestModule {
     @Singleton
     OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingInterceptor, HmacInterceptor hmacInterceptor) {
         OkHttpClient client = new OkHttpClient();
-        client.setReadTimeout(TIMEOUT, TimeUnit.SECONDS);
-        client.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
+        client.setReadTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
+        client.setConnectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
         client.interceptors().add(loggingInterceptor);
         client.interceptors().add(hmacInterceptor);
 

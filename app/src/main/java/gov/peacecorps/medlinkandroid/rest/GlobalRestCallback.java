@@ -3,7 +3,7 @@ package gov.peacecorps.medlinkandroid.rest;
 import java.net.UnknownHostException;
 
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.activities.BaseActivity;
+import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import retrofit.Callback;
 import timber.log.Timber;
 

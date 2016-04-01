@@ -25,6 +25,9 @@ public class Request implements Serializable {
     @JsonProperty("supplies")
     private List<Supply> supplies;
 
+    @JsonProperty("text")
+    private String specialInstructions;
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -41,6 +44,29 @@ public class Request implements Serializable {
         this.supplies = supplies;
     }
 
+    public String getSpecialInstructions() {
+        return specialInstructions;
+    }
+
+    public void setSpecialInstructions(String specialInstructions) {
+        this.specialInstructions = specialInstructions;
+    }
+
+    public boolean isNoSupplyPendingUserResponse(){
+        return !isAtLeastOneSupplyPendingUserResponse();
+    }
+
+    public boolean isAtLeastOneSupplyPendingUserResponse() {
+        for (Supply supply : getSupplies()) {
+            SupplyUserResponseType userResponseStatus = supply.getUserResponseStatus();
+            if (userResponseStatus == SupplyUserResponseType.PENDING || userResponseStatus == SupplyUserResponseType.RESPONDED) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Status getStatus() {
         int numApproved = 0, numDenied = 0;
 
@@ -48,7 +74,6 @@ public class Request implements Serializable {
             if (supply.isPending()) {
                 return Status.AT_LEAST_ONE_PENDING;
             } else {
-
                 switch (supply.getResponse().getType()) {
                     case DELIVERY:
                         numApproved++;
@@ -66,9 +91,9 @@ public class Request implements Serializable {
             }
         }
 
-        if(hasOnlyApprovedSupplies(numApproved, numDenied)){
+        if (hasOnlyApprovedSupplies(numApproved, numDenied)) {
             return Status.ALL_APPROVED;
-        } else if(hasOnlyDeniedSupplies(numApproved, numDenied)) {
+        } else if (hasOnlyDeniedSupplies(numApproved, numDenied)) {
             return Status.ALL_DENIED;
         }
 
