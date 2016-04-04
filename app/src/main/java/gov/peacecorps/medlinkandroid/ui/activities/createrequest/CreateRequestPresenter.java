@@ -1,20 +1,26 @@
 package gov.peacecorps.medlinkandroid.ui.activities.createrequest;
 
+import android.Manifest;
 import android.support.annotation.NonNull;
 import android.telephony.SmsManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.Set;
 
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.helpers.DataManager;
 import gov.peacecorps.medlinkandroid.helpers.UiUtils;
 import gov.peacecorps.medlinkandroid.rest.GlobalRestCallback;
 import gov.peacecorps.medlinkandroid.rest.models.request.createrequest.SubmitNewRequest;
 import gov.peacecorps.medlinkandroid.rest.models.response.createrequest.SubmitNewRequestResponse;
 import gov.peacecorps.medlinkandroid.rest.service.API;
+import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import retrofit.Call;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -23,6 +29,14 @@ public class CreateRequestPresenter {
     private final API api;
     private final DataManager dataManager;
     private BaseActivity baseActivity;
+
+    final MaterialDialog.ButtonCallback finishActivityCallback = new MaterialDialog.ButtonCallback() {
+        @Override
+        public void onPositive(MaterialDialog dialog) {
+            super.onPositive(dialog);
+            baseActivity.finish();
+        }
+    };
 
     public CreateRequestPresenter(CreateRequestView createRequestView, API api, DataManager dataManager) {
         this.baseActivity = createRequestView.getBaseActivity();
@@ -35,46 +49,73 @@ public class CreateRequestPresenter {
         submitNewRequest(buildNewRequestPayload(selectedSupplyIds, specialInstructions));
     }
 
-    public void submitNewRequest(final SubmitNewRequest newRequestPayload) {
-        final MaterialDialog.ButtonCallback finishActivityCallback = new MaterialDialog.ButtonCallback() {
-            @Override
-            public void onPositive(MaterialDialog dialog) {
-                super.onPositive(dialog);
-                baseActivity.finish();
-            }
-        };
-
+    private void submitNewRequest(final SubmitNewRequest newRequestPayload) {
         final GlobalRestCallback.NetworkFailureCallback networkFailureCallback = new GlobalRestCallback.NetworkFailureCallback() {
             @Override
             public void onNetworkFailure() {
                 createOrderByText();
             }
 
-            private void createOrderByText() {
-                UiUtils.showAlertDialog(baseActivity,
-                        R.string.send_order_by_sms,
-                        R.string.yes,
-                        R.string.no,
-                        new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
-                                SmsManager smsManager = SmsManager.getDefault();
-                                smsManager.sendTextMessage(baseActivity.getString(R.string.sms_phone_number), null, buildTextBody(), null, null);
-                                baseActivity.showInfoDialog(R.string.your_order_has_been_submitted, finishActivityCallback);
-                            }
+            void createOrderByText() {
+                Dexter.checkPermission(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        UiUtils.showAlertDialog(baseActivity,
+                                R.string.send_order_by_sms,
+                                R.string.yes,
+                                R.string.no,
+                                new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
+                                        SmsManager smsManager = SmsManager.getDefault();
+                                        smsManager.sendTextMessage(baseActivity.getString(R.string.sms_phone_number), null, buildTextBody(newRequestPayload), null, null);
+                                        baseActivity.showInfoDialog(R.string.your_order_has_been_submitted, finishActivityCallback);
+                                    }
 
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                                dataManager.setUnsubmittedRequest(newRequestPayload);
-                                baseActivity.showInfoDialog(R.string.your_order_has_been_saved, finishActivityCallback);
-                            }
-                        });
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        super.onNegative(dialog);
+                                        saveRequestForLater();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        saveRequestForLater();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permissionRequest, final PermissionToken token) {
+                        UiUtils.showAlertDialog(baseActivity,
+                                R.string.please_give_us_sms_permissions,
+                                R.string.okay,
+                                R.string.no,
+                                new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
+                                        token.continuePermissionRequest();
+                                    }
+
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        super.onNegative(dialog);
+                                        token.cancelPermissionRequest();
+                                    }
+                                });
+                    }
+                }, Manifest.permission.SEND_SMS);
             }
 
-            private String buildTextBody() {
-                String supplyShortCodes = getSupplyShortCodes();
+            private void saveRequestForLater() {
+                dataManager.setUnsubmittedRequest(newRequestPayload);
+                baseActivity.showInfoDialog(R.string.your_order_has_been_saved, finishActivityCallback);
+            }
+
+            private String buildTextBody(SubmitNewRequest newRequestPayload) {
+                String supplyShortCodes = getSupplyShortCodes(newRequestPayload);
                 String specialInstructions = newRequestPayload.getSpecialInstructions();
                 if (!specialInstructions.isEmpty()) {
                     return supplyShortCodes + " - " + specialInstructions;
@@ -84,7 +125,7 @@ public class CreateRequestPresenter {
             }
 
             @NonNull
-            private String getSupplyShortCodes() {
+            private String getSupplyShortCodes(SubmitNewRequest newRequestPayload) {
                 StringBuilder sb = new StringBuilder();
                 for (Integer supplyId : newRequestPayload.getSupplyIds()) {
                     sb.append(dataManager.getSupply(supplyId).getShortCode());

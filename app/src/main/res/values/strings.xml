@@ -58,4 +58,5 @@
     <string name="flagged">flagged</string>
     <string name="title_activity_request_history">Order History</string>
     <string name="user_response_flagged">You flagged this item</string>
+    <string name="please_give_us_sms_permissions">Please give us permission to send an SMS to create this order.</string>
 </resources>
