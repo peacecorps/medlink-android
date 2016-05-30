@@ -19,6 +19,9 @@ public class SupplyResponse implements Serializable {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern=Constants.DESERIALIZE_DATE_FORMAT)
     private Date createdAt;
 
+    @JsonProperty("extra_information")
+    private String extraInformation;
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +44,13 @@ public class SupplyResponse implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getExtraInformation() {
+        return extraInformation;
+    }
+
+    public void setExtraInformation(String extraInformation) {
+        this.extraInformation = extraInformation;
     }
 }

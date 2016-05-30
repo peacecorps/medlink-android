@@ -32,7 +32,7 @@ public class SubmittedRequestsPresenter {
 
         List<Supply> supplies = dataManager.getSupplies();
         if (supplies.isEmpty()) {
-            Call<GetSuppliesResponse> getSuppliesResponseCall = api.getSupplies();
+            Call<GetSuppliesResponse> getSuppliesResponseCall = api.getAllSupplies();
             getSuppliesResponseCall.enqueue(new GlobalRestCallback<GetSuppliesResponse>(requestsListView.getBaseActivity()) {
                 @Override
                 public void onResponse(Response<GetSuppliesResponse> response, Retrofit retrofit) {

@@ -3,16 +3,16 @@ package gov.peacecorps.medlinkandroid.rest.models.request.getrequestslist;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum SupplyResponseType {
-    @JsonProperty("Delivery")
+    @JsonProperty("delivery")
     DELIVERY,
 
-    @JsonProperty("Denial")
+    @JsonProperty("denial")
     DENIAL,
 
-    @JsonProperty("Pickup")
+    @JsonProperty("pickup")
     PICKUP,
 
-    @JsonProperty("Reimburse")
+    @JsonProperty("reimburse")
     REIMBURSE,
 
     @JsonProperty("duplicate")
