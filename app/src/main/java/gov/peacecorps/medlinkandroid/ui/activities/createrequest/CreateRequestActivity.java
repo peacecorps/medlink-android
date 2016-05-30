@@ -12,8 +12,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import gov.peacecorps.medlinkandroid.R;
-import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 import gov.peacecorps.medlinkandroid.application.AppComponent;
+import gov.peacecorps.medlinkandroid.ui.activities.BaseActivity;
 
 public class CreateRequestActivity extends BaseActivity implements CreateRequestView {
 

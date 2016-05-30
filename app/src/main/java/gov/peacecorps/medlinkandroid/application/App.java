@@ -2,6 +2,8 @@ package gov.peacecorps.medlinkandroid.application;
 
 import android.app.Application;
 
+import com.karumi.dexter.Dexter;
+
 import gov.peacecorps.medlinkandroid.BuildConfig;
 import timber.log.Timber;
 
@@ -15,7 +17,13 @@ public class App extends Application {
 
         initTimber();
 
+        initDexter();
+
         bootstrapDI();
+    }
+
+    private void initDexter() {
+        Dexter.initialize(this);
     }
 
     private void initTimber() {
